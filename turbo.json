@@ -1,0 +1,56 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [
+        "bin/**",
+        "out/**",
+        "dist/**",
+        "build/**"
+      ]
+    },
+    "build:native": {
+      "dependsOn": [],
+      "inputs": [
+        "Sources/**",
+        "Package.swift",
+        "main.swift",
+        "scripts/**",
+        "src/binding/**",
+        "binding.gyp",
+        "whisper.cpp/**"
+      ],
+      "outputs": ["bin/**", "build/**"],
+      "cache": true
+    },
+    "format:check": {},
+    "lint": {
+      "dependsOn": ["format:check"]
+    },
+    "type:check": {
+      "dependsOn": ["^build", "^type:check"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "test:watch": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true
+    },
+    "test:ui": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
