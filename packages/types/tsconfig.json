@@ -1,14 +1,23 @@
 {
-  "extends": "@amical/typescript-config/base.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
+    "esModuleInterop": true,
+    "incremental": false,
+    "isolatedModules": true,
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "module": "NodeNext",
+    "moduleDetection": "force",
+    "moduleResolution": "NodeNext",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2022",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "sourceMap": true
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "generated",
-    "scripts"
-  ]
+  "exclude": ["dist", "generated", "scripts"]
 }
