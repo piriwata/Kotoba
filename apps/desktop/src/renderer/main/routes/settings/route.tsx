@@ -48,18 +48,12 @@ function SettingsLayoutContent() {
   }, [location.pathname]);
 
   const getSettingsPageTitle = (pathname: string): string => {
-    // Check for dynamic routes first
-    if (pathname.startsWith("/settings/notes")) {
-      return "Notes";
-    }
-
     const routes: Record<string, string> = {
       "/settings/preferences": "Preferences",
       "/settings/dictation": "Dictation",
       "/settings/vocabulary": "Vocabulary",
       "/settings/shortcuts": "Shortcuts",
       "/settings/ai-models": "AI Models",
-      "/settings/history": "History",
       "/settings/advanced": "Advanced",
       "/settings/about": "About",
     };

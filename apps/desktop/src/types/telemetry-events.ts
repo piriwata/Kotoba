@@ -91,16 +91,3 @@ export interface NativeHelperCrashedEvent {
   max_restarts: number;
   will_restart: boolean;
 }
-
-// ============================================================================
-// Notes Events
-// ============================================================================
-
-/**
- * Fired when a new note is created
- */
-export interface NoteCreatedEvent {
-  note_id: number;
-  has_initial_content: boolean;
-  has_icon: boolean;
-}

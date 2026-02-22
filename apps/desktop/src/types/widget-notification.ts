@@ -69,10 +69,6 @@ export const ERROR_CODE_CONFIG: Record<ErrorCode, WidgetNotificationConfig> = {
     title: { key: "widget.notifications.errorCode.unknown.title" },
     description: { key: "widget.notifications.errorCode.unknown.description" },
     primaryAction: {
-      label: { key: "widget.notifications.action.viewHistory" },
-      navigateTo: "/history",
-    },
-    secondaryAction: {
       label: { key: "widget.notifications.action.support" },
       icon: "discord",
       externalUrl: DISCORD_SUPPORT_URL,
@@ -140,10 +136,6 @@ export const ERROR_CODE_CONFIG: Record<ErrorCode, WidgetNotificationConfig> = {
       key: "widget.notifications.errorCode.localTranscriptionFailed.description",
     },
     primaryAction: {
-      label: { key: "widget.notifications.action.viewHistory" },
-      navigateTo: "/history",
-    },
-    secondaryAction: {
       label: { key: "widget.notifications.action.support" },
       icon: "discord",
       externalUrl: DISCORD_SUPPORT_URL,

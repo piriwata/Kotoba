@@ -1,5 +1,3 @@
-export const NOTE_WINDOW_FEATURE_FLAG = "note-window";
-
 export function isFeatureFlagEnabled(
   value: string | boolean | undefined,
 ): boolean {
