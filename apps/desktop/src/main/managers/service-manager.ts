@@ -251,6 +251,15 @@ export class ServiceManager {
     return ServiceManager.instance;
   }
 
+  /**
+   * Create a new ServiceManager instance, replacing any existing singleton.
+   * Primarily used in tests to ensure a fresh instance for each test.
+   */
+  static createInstance(): ServiceManager {
+    ServiceManager.instance = new ServiceManager();
+    return ServiceManager.instance;
+  }
+
   setWindowManager(windowManager: WindowManager): void {
     this.windowManager = windowManager;
     logger.main.info("Window manager registered with ServiceManager");
