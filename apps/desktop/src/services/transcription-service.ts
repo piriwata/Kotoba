@@ -239,10 +239,6 @@ export class TranscriptionService {
           accumulatedTranscription: [],
         };
 
-        // Get accessibility context from NativeBridge
-        streamingContext.sharedData.accessibilityContext =
-          this.nativeBridge?.getAccessibilityContext() ?? null;
-
         session = {
           context: streamingContext,
           transcriptionResults: [],
@@ -276,7 +272,6 @@ export class TranscriptionService {
         context: {
           sessionId,
           vocabulary: session.context.sharedData.vocabulary,
-          accessibilityContext: session.context.sharedData.accessibilityContext,
           previousChunk,
           aggregatedTranscription: aggregatedTranscription || undefined,
           language: session.context.sharedData.userPreferences?.language,
@@ -374,7 +369,6 @@ export class TranscriptionService {
         const finalTranscription = await provider.flush({
           sessionId,
           vocabulary: session.context.sharedData.vocabulary,
-          accessibilityContext: session.context.sharedData.accessibilityContext,
           previousChunk,
           aggregatedTranscription: aggregatedTranscription || undefined,
           language: session.context.sharedData.userPreferences?.language,
@@ -398,15 +392,6 @@ export class TranscriptionService {
 
       let completeTranscription = session.transcriptionResults.join("");
 
-      // Apply simple pre-formatting for local models (handles Whisper leading space artifact)
-      const preSelectionText =
-        session.context.sharedData.accessibilityContext?.context
-          ?.textSelection?.preSelectionText;
-      completeTranscription = this.preFormatLocalTranscription(
-        completeTranscription,
-        preSelectionText,
-      );
-
       logger.transcription.info("Finalizing streaming session", {
         sessionId,
         rawTranscriptionLength: completeTranscription.length,
@@ -416,7 +401,6 @@ export class TranscriptionService {
       const formatResult = await this.applyFormattingAndReplacements({
         text: completeTranscription,
         vocabulary: session.context.sharedData.vocabulary,
-        accessibilityContext: session.context.sharedData.accessibilityContext,
         replacements: session.context.sharedData.replacements,
         formattingStyle:
           session.context.sharedData.userPreferences?.formattingStyle,
@@ -572,36 +556,12 @@ export class TranscriptionService {
     return context;
   }
 
-  /**
-   * Simple pre-formatter for local Transcription models.
-   * Handles leading space based on insertion context to avoid double spaces or unwanted leading whitespace.
-   * Runs before LLM formatter (if configured) to ensure clean input.
-   */
-  private preFormatLocalTranscription(
-    transcription: string,
-    preSelectionText: string | null | undefined,
-  ): string {
-    if (!transcription.startsWith(" ")) {
-      return transcription;
-    }
-
-    // Strip leading space only if previous text exists and ends with ASCII whitespace.
-    // When there's no previous text (null/undefined/""), keep the leading space.
-    const shouldStripLeadingSpace =
-      preSelectionText !== undefined &&
-      preSelectionText !== null &&
-      (preSelectionText.length === 0 || /[ \t\r\n]$/.test(preSelectionText));
-
-    return shouldStripLeadingSpace ? transcription.slice(1) : transcription;
-  }
-
   private async formatWithProvider(
     provider: FormattingProvider,
     text: string,
     context: {
       style?: string;
       vocabulary?: string[];
-      accessibilityContext?: StreamingSession["context"]["sharedData"]["accessibilityContext"];
     },
   ): Promise<{ text: string; duration: number } | null> {
     const startTime = performance.now();
@@ -612,7 +572,6 @@ export class TranscriptionService {
         context: {
           style: context.style,
           vocabulary: context.vocabulary,
-          accessibilityContext: context.accessibilityContext,
           aggregatedTranscription: text,
         },
       });
@@ -641,7 +600,6 @@ export class TranscriptionService {
   private async applyFormattingAndReplacements(options: {
     text: string;
     vocabulary?: string[];
-    accessibilityContext?: StreamingSession["context"]["sharedData"]["accessibilityContext"];
     replacements: Map<string, string>;
     formattingStyle?: string;
   }): Promise<{
@@ -694,7 +652,6 @@ export class TranscriptionService {
             const result = await this.formatWithProvider(provider, text, {
               style: options.formattingStyle,
               vocabulary: options.vocabulary,
-              accessibilityContext: options.accessibilityContext,
             });
             if (result) {
               text = result.text;
@@ -716,7 +673,6 @@ export class TranscriptionService {
             const result = await this.formatWithProvider(provider, text, {
               style: options.formattingStyle,
               vocabulary: options.vocabulary,
-              accessibilityContext: options.accessibilityContext,
             });
             if (result) {
               text = result.text;
@@ -888,11 +844,6 @@ export class TranscriptionService {
     }
 
     let rawTranscription = transcriptionResults.join("");
-
-    rawTranscription = this.preFormatLocalTranscription(
-      rawTranscription,
-      null,
-    );
 
     // Apply formatting and vocabulary replacements
     const formatResult = await this.applyFormattingAndReplacements({

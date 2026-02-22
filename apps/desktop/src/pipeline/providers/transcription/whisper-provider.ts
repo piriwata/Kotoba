@@ -165,10 +165,7 @@ export class WhisperProvider implements TranscriptionProvider {
       }
 
       // Generate initial prompt from recent context only (align with cloud)
-      const initialPrompt = this.generateInitialPrompt(
-        aggregatedTranscription,
-        context.accessibilityContext,
-      );
+      const initialPrompt = this.generateInitialPrompt(aggregatedTranscription);
 
       const text = await this.workerWrapper.exec<string>("transcribeAudio", [
         aggregatedAudio,
@@ -265,25 +262,13 @@ export class WhisperProvider implements TranscriptionProvider {
     return aggregated;
   }
 
-  private generateInitialPrompt(
-    aggregatedTranscription?: string,
-    accessibilityContext?: TranscribeContext["accessibilityContext"],
-  ): string {
+  private generateInitialPrompt(aggregatedTranscription?: string): string {
     if (aggregatedTranscription) {
       // Pass full transcription - whisper.cpp auto-truncates to last ~224 tokens
       logger.transcription.debug(
         `Generated initial prompt from aggregated transcription: "${aggregatedTranscription}"`,
       );
       return aggregatedTranscription;
-    }
-
-    const beforeText =
-      accessibilityContext?.context?.textSelection?.preSelectionText;
-    if (beforeText && beforeText.trim().length > 0) {
-      logger.transcription.debug(
-        `Generated initial prompt from before text: "${beforeText}"`,
-      );
-      return beforeText;
     }
 
     logger.transcription.debug("Generated initial prompt: empty");

@@ -9,8 +9,6 @@ export interface PipelineContext {
   metadata: Map<string, any>;
 }
 
-import { GetAccessibilityContextResult } from "@amical/types";
-
 export interface SharedPipelineData {
   vocabulary: string[]; // Custom vocab
   replacements: Map<string, string>; // Custom replacements
@@ -22,7 +20,6 @@ export interface SharedPipelineData {
     source: "microphone" | "file" | "stream";
     duration?: number;
   };
-  accessibilityContext: GetAccessibilityContextResult | null;
 }
 
 /**
@@ -41,7 +38,6 @@ export function createDefaultContext(sessionId: string): PipelineContext {
       audioMetadata: {
         source: "microphone",
       },
-      accessibilityContext: null, // Will be populated async by TranscriptionService
     },
     metadata: new Map(),
   };
