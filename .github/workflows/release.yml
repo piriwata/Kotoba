@@ -2,11 +2,6 @@ name: Release
 
 on:
   push:
-    branches:
-      - feat.windows.support
-      - feat/whisper.migration
-      - feat/vulkan-support
-      - ui2
     tags:
       - "v*"
   workflow_dispatch:
@@ -18,17 +13,13 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.os == 'macos' && 'macOS' || 'Windows' }} (${{ matrix.arch }})
+    name: Build Windows (${{ matrix.arch }})
     runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:
-          - os: macos
-            arch: arm64
-            runner: macos-latest
-          - os: macos
-            arch: x64
-            runner: macos-15-intel
           - os: windows
             arch: x64
             runner: windows-2025
@@ -38,28 +29,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      - name: Verify architecture
-        if: matrix.os == 'macos'
-        run: |
-          CURRENT_ARCH=$(uname -m)
-          echo "Current shell architecture: $CURRENT_ARCH"
-          echo "Target architecture: ${{ matrix.arch }}"
-          echo "Arch command output: $(arch)"
-
-          if [[ "${{ matrix.arch }}" == "x64" ]]; then
-            if [[ "$CURRENT_ARCH" != "x86_64" ]]; then
-              echo "ERROR: Expected x86_64 architecture but got $CURRENT_ARCH"
-              exit 1
-            fi
-            echo "✓ Architecture verified: Running as native x86_64 on Intel hardware"
-          elif [[ "${{ matrix.arch }}" == "arm64" ]]; then
-            if [[ "$CURRENT_ARCH" != "arm64" ]]; then
-              echo "ERROR: Expected arm64 architecture but got $CURRENT_ARCH"
-              exit 1
-            fi
-            echo "✓ Architecture verified: Running as native arm64"
-          fi
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -110,53 +79,8 @@ jobs:
         working-directory: apps/desktop
         run: pnpm download-node
 
-      - name: Import Developer ID cert
-        if: matrix.os == 'macos'
-        uses: apple-actions/import-codesign-certs@v3
-        with:
-          p12-file-base64: ${{ secrets.DEVELOPER_CERT_BASE64 }}
-          p12-password: ${{ secrets.DEVELOPER_CERT_PASSPHRASE }}
-
-      - name: List signing identities (debug)
-        if: matrix.os == 'macos'
-        run: security find-identity -v -p codesigning
-
-      - name: Build artifacts (macOS)
-        if: matrix.os == 'macos'
-        working-directory: apps/desktop
-        env:
-          SKIP_CODESIGNING: false
-          SKIP_NOTARIZATION: false
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          CODESIGNING_IDENTITY: ${{ secrets.CODESIGNING_IDENTITY }}
-          POSTHOG_HOST: https://app.posthog.com
-          TELEMETRY_ENABLED: true
-          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
-          FEEDBACK_SURVEY_ID: ${{ secrets.FEEDBACK_SURVEY_ID }}
-          AUTH_CLIENT_ID: ${{ secrets.AUTH_CLIENT_ID }}
-          AUTHORIZATION_ENDPOINT: ${{ secrets.AUTHORIZATION_ENDPOINT }}
-          AUTH_TOKEN_ENDPOINT: ${{ secrets.AUTH_TOKEN_ENDPOINT }}
-          API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
-          AUTH_REDIRECT_URI: ${{ secrets.AUTH_REDIRECT_URI }}
-        run: |
-          echo "Building macOS ${{ matrix.arch }} artifacts"
-          pnpm make:${{ matrix.arch }}
-
       - name: Build artifacts (Windows)
-        if: matrix.os == 'windows'
         working-directory: apps/desktop
-        env:
-          POSTHOG_HOST: https://app.posthog.com
-          TELEMETRY_ENABLED: true
-          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
-          FEEDBACK_SURVEY_ID: ${{ secrets.FEEDBACK_SURVEY_ID }}
-          AUTH_CLIENT_ID: ${{ secrets.AUTH_CLIENT_ID }}
-          AUTHORIZATION_ENDPOINT: ${{ secrets.AUTHORIZATION_ENDPOINT }}
-          AUTH_TOKEN_ENDPOINT: ${{ secrets.AUTH_TOKEN_ENDPOINT }}
-          API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
-          AUTH_REDIRECT_URI: ${{ secrets.AUTH_REDIRECT_URI }}
         run: |
           echo "Building Windows x64 artifacts"
           pnpm make:windows
@@ -167,18 +91,7 @@ jobs:
         shell: bash
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
-      - name: Rename artifacts (macOS)
-        if: matrix.os == 'macos'
-        shell: bash
-        run: |
-          cd apps/desktop/out/make
-          for dmg in *.dmg; do
-            mv "$dmg" "Amical-macos-${{ matrix.arch }}.dmg"
-            echo "Renamed $dmg → Amical-macos-${{ matrix.arch }}.dmg"
-          done
-
       - name: Rename artifacts (Windows)
-        if: matrix.os == 'windows'
         shell: bash
         run: |
           cd apps/desktop/out/make/squirrel.windows/${{ matrix.arch }}
@@ -187,17 +100,7 @@ jobs:
             echo "Renamed $exe → Amical-windows-${{ matrix.arch }}.exe"
           done
 
-      - name: Upload artifacts (macOS)
-        if: matrix.os == 'macos'
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-${{ matrix.arch }}
-          path: |
-            apps/desktop/out/make/Amical-macos-${{ matrix.arch }}.dmg
-            apps/desktop/out/make/zip/darwin/${{ matrix.arch }}/*.zip
-
       - name: Upload artifacts (Windows)
-        if: matrix.os == 'windows'
         uses: actions/upload-artifact@v4
         with:
           name: windows-${{ matrix.arch }}
@@ -250,30 +153,16 @@ jobs:
 
             ### Downloads
 
-            #### macOS
-            - **Apple Silicon (M1/M2/M3)**: Download the DMG or ZIP file for arm64
-            - **Intel**: Download the DMG or ZIP file for x64
-
             #### Windows
             - **Windows (x64)**: Download the .exe installer for 64-bit Windows
 
             ### Installation
 
-            **macOS**: 
-            - **DMG**: Download and open the DMG file, then drag Amical to your Applications folder
-            - **ZIP**: Download and extract the ZIP file, then drag Amical to your Applications folder
-
             **Windows**:
             - Download and run the .exe installer
             - Follow the installation wizard
             - The app will be installed to your user AppData folder and a shortcut will be created
-
-            The ZIP files are primarily for automatic updates. We recommend using the DMG files for initial installation on macOS.
           files: |
-            artifacts/macos-arm64/*.dmg
-            artifacts/macos-arm64/zip/darwin/arm64/*.zip
-            artifacts/macos-x64/*.dmg
-            artifacts/macos-x64/zip/darwin/x64/*.zip
             artifacts/windows-x64/*.exe
             artifacts/windows-x64/*.nupkg
             artifacts/windows-x64/RELEASES
