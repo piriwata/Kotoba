@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { GetAccessibilityTreeDetailsParamsSchema } from "../methods/get-accessibility-tree-details";
-import { GetAccessibilityContextParamsSchema } from "../methods/get-accessibility-context";
-import { PasteTextParamsSchema } from "../methods/paste-text";
-import { RecheckPressedKeysParamsSchema } from "../methods/recheck-pressed-keys";
+import { GetAccessibilityTreeDetailsParamsSchema } from "../methods/get-accessibility-tree-details.js";
+import { GetAccessibilityContextParamsSchema } from "../methods/get-accessibility-context.js";
+import { PasteTextParamsSchema } from "../methods/paste-text.js";
+import { RecheckPressedKeysParamsSchema } from "../methods/recheck-pressed-keys.js";
 
 // Define a union of all possible RPC method names
 const RPCMethodNameSchema = z.union([
