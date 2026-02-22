@@ -27,6 +27,7 @@
       "node-abi": "4.14.0",
       "@types/minimatch": "3.0.5",
       "minimatch": "10.2.1",
+      "@electron/asar": "4.0.1",
       "tar": "7.5.8",
       "tar-fs": "2.1.4",
       "axios": "1.13.5"
