@@ -40,6 +40,5 @@ ollama pull llama3.2
 
 Released under the [MIT License](LICENSE).
 
+Copyright (c) 2026 piriwata  
 Copyright (c) 2025 Naomi Chopra, Haritabh Singh (upstream Amical)
-
-This fork inherits the same MIT License.
