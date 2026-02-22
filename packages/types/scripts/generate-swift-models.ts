@@ -2,7 +2,7 @@ import { execSync } from "child_process";
 import fs from "fs";
 
 const generatedDir =
-  "../swift-helper/Sources/SwiftHelper/models/generated";
+  "../native-helpers/swift-helper/Sources/SwiftHelper/models/generated";
 
 try {
   // Remove existing generated models and create the directory

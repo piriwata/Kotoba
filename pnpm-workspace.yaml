@@ -1,4 +1,5 @@
 packages:
   - "apps/*"
-  - "apps/desktop/*"
-  - "!apps/desktop/whisper-wrapper/whisper.cpp/**"
+  - "packages/*"
+  - "packages/**"
+  - "!packages/**/whisper.cpp/**"
