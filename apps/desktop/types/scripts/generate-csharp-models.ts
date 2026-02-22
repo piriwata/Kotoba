@@ -2,7 +2,7 @@ import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
 
-const generatedDir = "../native-helpers/windows-helper/src/Models/Generated";
+const generatedDir = "../windows-helper/src/Models/Generated";
 
 try {
   // Remove existing generated models and create the directory

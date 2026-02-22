@@ -26,7 +26,7 @@ const whisperDir = path.join(pkgDir, "whisper.cpp");
 
 if (!fs.existsSync(addonDir) || !fs.existsSync(whisperDir)) {
   console.error(
-    "whisper.cpp sources not found. Please add them to packages/whisper-wrapper/whisper.cpp",
+    "whisper.cpp sources not found. Please add them to apps/desktop/whisper-wrapper/whisper.cpp",
   );
   process.exit(1);
 }
