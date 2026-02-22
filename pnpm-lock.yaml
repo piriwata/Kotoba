@@ -184,13 +184,13 @@ importers:
         version: 8.21.3(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@trpc/client':
         specifier: ^11.4.2
-        version: 11.5.0(@trpc/server@11.5.0(typescript@5.8.3))(typescript@5.8.3)
+        version: 11.5.0(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3)
       '@trpc/react-query':
         specifier: ^11.4.2
-        version: 11.5.0(@tanstack/react-query@5.85.5(react@19.1.1))(@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.5.0(typescript@5.8.3))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.8.3)
+        version: 11.5.0(@tanstack/react-query@5.85.5(react@19.1.1))(@trpc/client@11.5.0(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.8.0(typescript@5.8.3))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.8.3)
       '@trpc/server':
-        specifier: ^11.4.2
-        version: 11.5.0(typescript@5.8.3)
+        specifier: ^11.8.0
+        version: 11.8.0(typescript@5.8.3)
       '@types/split2':
         specifier: ^4.2.3
         version: 4.2.3
@@ -235,7 +235,7 @@ importers:
         version: 1.0.1
       electron-trpc-experimental:
         specifier: 1.0.0-alpha.1
-        version: 1.0.0-alpha.1(@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.5.0(typescript@5.8.3))(electron@38.1.0)
+        version: 1.0.0-alpha.1(@trpc/client@11.5.0(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.8.0(typescript@5.8.3))(electron@38.1.0)
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.1.1)
@@ -2537,8 +2537,8 @@ packages:
       react-dom: '>=18.2.0'
       typescript: '>=5.7.2'
 
-  '@trpc/server@11.5.0':
-    resolution: {integrity: sha512-0IBtkmUCeO2ycn4K45/cqsujnlCQrSvkCo7lFDpg3kGMIPiLyLRciID5IiS7prEjRjeITa+od2aaHTIwONApVw==}
+  '@trpc/server@11.8.0':
+    resolution: {integrity: sha512-DphyQnLuyX2nwJCQGWQ9zYz4hZGvRhSBqDhQ0SH3tDhQ3PU4u68xofA0pJ741Ir4InEAFD+TtJVLAQy+wVOkiQ==}
     peerDependencies:
       typescript: '>=5.7.2'
 
@@ -8677,21 +8677,21 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.8.3))(typescript@5.8.3)':
+  '@trpc/client@11.5.0(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
-      '@trpc/server': 11.5.0(typescript@5.8.3)
+      '@trpc/server': 11.8.0(typescript@5.8.3)
       typescript: 5.8.3
 
-  '@trpc/react-query@11.5.0(@tanstack/react-query@5.85.5(react@19.1.1))(@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.5.0(typescript@5.8.3))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.8.3)':
+  '@trpc/react-query@11.5.0(@tanstack/react-query@5.85.5(react@19.1.1))(@trpc/client@11.5.0(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.8.0(typescript@5.8.3))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.8.3)':
     dependencies:
       '@tanstack/react-query': 5.85.5(react@19.1.1)
-      '@trpc/client': 11.5.0(@trpc/server@11.5.0(typescript@5.8.3))(typescript@5.8.3)
-      '@trpc/server': 11.5.0(typescript@5.8.3)
+      '@trpc/client': 11.5.0(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3)
+      '@trpc/server': 11.8.0(typescript@5.8.3)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       typescript: 5.8.3
 
-  '@trpc/server@11.5.0(typescript@5.8.3)':
+  '@trpc/server@11.8.0(typescript@5.8.3)':
     dependencies:
       typescript: 5.8.3
 
@@ -8999,7 +8999,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -9787,10 +9787,10 @@ snapshots:
 
   electron-to-chromium@1.5.207: {}
 
-  electron-trpc-experimental@1.0.0-alpha.1(@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.5.0(typescript@5.8.3))(electron@38.1.0):
+  electron-trpc-experimental@1.0.0-alpha.1(@trpc/client@11.5.0(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.8.0(typescript@5.8.3))(electron@38.1.0):
     dependencies:
-      '@trpc/client': 11.5.0(@trpc/server@11.5.0(typescript@5.8.3))(typescript@5.8.3)
-      '@trpc/server': 11.5.0(typescript@5.8.3)
+      '@trpc/client': 11.5.0(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3)
+      '@trpc/server': 11.8.0(typescript@5.8.3)
       '@watchable/unpromise': 1.0.2
       debug: 4.4.1
       electron: 38.1.0
@@ -10613,7 +10613,7 @@ snapshots:
     dependencies:
       '@tootallnate/once': 2.0.0
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -10625,7 +10625,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -12053,7 +12053,7 @@ snapshots:
   socks-proxy-agent@7.0.0:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
       socks: 2.8.7
     transitivePeerDependencies:
       - supports-color
