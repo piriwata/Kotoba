@@ -148,9 +148,6 @@ jobs:
           body: |
             ## Amical Desktop v${{ steps.package_version.outputs.version }}
 
-            ### What's New
-            - Please update this section with actual changes
-
             ### Downloads
 
             #### Windows
