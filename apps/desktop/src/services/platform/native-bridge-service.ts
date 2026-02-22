@@ -20,9 +20,6 @@ import {
   GetAccessibilityTreeDetailsParams,
   GetAccessibilityTreeDetailsResult,
   GetAccessibilityTreeDetailsResultSchema,
-  GetAccessibilityContextParams,
-  GetAccessibilityContextResult,
-  GetAccessibilityContextResultSchema,
   GetAccessibilityStatusParams,
   GetAccessibilityStatusResult,
   GetAccessibilityStatusResultSchema,
@@ -44,7 +41,6 @@ import {
   RecheckPressedKeysParams,
   RecheckPressedKeysResult,
   RecheckPressedKeysResultSchema,
-  AppContext,
 } from "@amical/types";
 
 // Define the interface for RPC methods
@@ -52,10 +48,6 @@ interface RPCMethods {
   getAccessibilityTreeDetails: {
     params: GetAccessibilityTreeDetailsParams;
     result: GetAccessibilityTreeDetailsResult;
-  };
-  getAccessibilityContext: {
-    params: GetAccessibilityContextParams;
-    result: GetAccessibilityContextResult;
   };
   getAccessibilityStatus: {
     params: GetAccessibilityStatusParams;
@@ -100,7 +92,6 @@ type PendingRpc = {
 
 const RPC_RESULT_SCHEMAS: Record<keyof RPCMethods, ZodTypeAny> = {
   getAccessibilityTreeDetails: GetAccessibilityTreeDetailsResultSchema,
-  getAccessibilityContext: GetAccessibilityContextResultSchema,
   getAccessibilityStatus: GetAccessibilityStatusResultSchema,
   requestAccessibilityPermission: RequestAccessibilityPermissionResultSchema,
   pasteText: PasteTextResultSchema,
@@ -197,7 +188,6 @@ export class NativeBridge extends EventEmitter {
   private pending = new Map<string, PendingRpc>();
   private helperPath: string;
   private logger = createScopedLogger("native-bridge");
-  private accessibilityContext: AppContext | null = null;
 
   // Auto-restart configuration
   private static readonly MAX_RESTARTS = 3;
@@ -752,41 +742,6 @@ export class NativeBridge extends EventEmitter {
       this.proc.kill();
       this.proc = null;
     }
-  }
-
-  /**
-   * Refresh the cached accessibility context from the native helper.
-   * This is called asynchronously when recording starts.
-   */
-  async refreshAccessibilityContext(): Promise<void> {
-    try {
-      const result = await this.call("getAccessibilityContext", {
-        editableOnly: false,
-      });
-      this.accessibilityContext = result.context;
-      this.logger.debug("Accessibility context refreshed", {
-        hasApplication: !!result.context?.application?.name,
-        hasFocusedElement: !!result.context?.focusedElement?.role,
-        hasTextSelection: !!result.context?.textSelection?.selectedText,
-        extractionMethod: result.context?.textSelection?.extractionMethod,
-        metricsMs: result.context?.metrics?.totalTimeMs,
-      });
-    } catch (error) {
-      this.logger.error("Failed to refresh accessibility context", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-    }
-  }
-
-  /**
-   * Get the cached accessibility context.
-   * Returns in the result wrapper format for API consistency.
-   */
-  getAccessibilityContext(): GetAccessibilityContextResult | null {
-    if (this.accessibilityContext === null) {
-      return null;
-    }
-    return { context: this.accessibilityContext };
   }
 
   /**

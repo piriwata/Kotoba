@@ -291,13 +291,9 @@ export class RecordingManager extends EventEmitter {
       );
       await transcriptionService.resetVadForNewSession();
 
-      // Refresh accessibility context (TextMarker API for Electron support)
-      // Fire and forget - context will be ready by the time first audio chunk arrives
-      const nativeBridge = this.serviceManager.getService("nativeBridge");
-      nativeBridge.refreshAccessibilityContext();
-
       // Conditionally mute system audio based on preferences
       const settingsService = this.serviceManager.getService("settingsService");
+      const nativeBridge = this.serviceManager.getService("nativeBridge");
       const preferences = await settingsService.getPreferences();
       const shouldMute = preferences?.muteSystemAudio ?? true;
 

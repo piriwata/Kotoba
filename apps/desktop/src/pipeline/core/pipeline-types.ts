@@ -4,14 +4,12 @@
 
 // Re-export context types from dedicated file
 import { PipelineContext } from "./context";
-import { GetAccessibilityContextResult } from "@amical/types";
 export { PipelineContext, SharedPipelineData } from "./context";
 
 // Context for transcription operations (shared between transcribe and flush)
 export interface TranscribeContext {
   sessionId?: string;
   vocabulary?: string[];
-  accessibilityContext?: GetAccessibilityContextResult | null;
   previousChunk?: string;
   aggregatedTranscription?: string;
   language?: string;
@@ -31,7 +29,6 @@ export interface FormatParams {
   context: {
     style?: string;
     vocabulary?: string[];
-    accessibilityContext?: GetAccessibilityContextResult | null;
     previousChunk?: string;
     aggregatedTranscription?: string;
   };
