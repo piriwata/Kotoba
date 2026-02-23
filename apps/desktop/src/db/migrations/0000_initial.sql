@@ -6,16 +6,24 @@ CREATE TABLE `app_settings` (
 	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE `downloaded_models` (
-	`id` text PRIMARY KEY NOT NULL,
+CREATE TABLE `models` (
+	`id` text NOT NULL,
+	`provider` text NOT NULL,
 	`name` text NOT NULL,
 	`type` text NOT NULL,
-	`local_path` text NOT NULL,
-	`downloaded_at` integer DEFAULT (unixepoch()) NOT NULL,
-	`size` integer NOT NULL,
+	`size` text,
+	`context` text,
+	`description` text,
+	`local_path` text,
+	`size_bytes` integer,
 	`checksum` text,
+	`downloaded_at` integer,
+	`original_model` text,
+	`speed` real,
+	`accuracy` real,
 	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
-	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
+	`updated_at` integer DEFAULT (unixepoch()) NOT NULL,
+	PRIMARY KEY(`provider`, `id`)
 );
 --> statement-breakpoint
 CREATE TABLE `transcriptions` (
@@ -33,13 +41,6 @@ CREATE TABLE `transcriptions` (
 	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE `vocabulary` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`word` text NOT NULL,
-	`date_added` integer DEFAULT (unixepoch()) NOT NULL,
-	`usage_count` integer DEFAULT 0,
-	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
-	`updated_at` integer DEFAULT (unixepoch()) NOT NULL
-);
+CREATE INDEX `models_provider_idx` ON `models` (`provider`);
 --> statement-breakpoint
-CREATE UNIQUE INDEX `vocabulary_word_unique` ON `vocabulary` (`word`);
+CREATE INDEX `models_type_idx` ON `models` (`type`);
