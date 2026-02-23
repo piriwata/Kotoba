@@ -244,19 +244,6 @@ export function App() {
     });
   };
 
-  // Handle model selection (telemetry tracked in backend)
-  const handleModelSelection = (
-    modelType: ModelType,
-    recommendationFollowed: boolean,
-  ) => {
-    handleSaveAndContinue({
-      selectedModelType: modelType,
-      modelRecommendation: state?.modelRecommendation
-        ? { ...state.modelRecommendation, followed: recommendationFollowed }
-        : undefined,
-    });
-  };
-
   // Handle completion (T039)
   const handleComplete = async () => {
     try {
@@ -331,9 +318,8 @@ export function App() {
       case OnboardingScreen.ModelSelection:
         return (
           <ModelSelectionScreen
-            onNext={handleModelSelection}
+            onNext={navigateNext}
             onBack={navigateBack}
-            initialSelection={preferences.selectedModelType}
           />
         );
 

@@ -141,34 +141,17 @@
       }
     },
     "modelSelection": {
-      "title": "Choose Your AI Model",
-      "subtitle": "Select how you want Amical to process your audio",
-      "completeSetupToContinue": "Complete setup to continue",
-      "recommended": "Recommended",
-      "prosLabel": "Pros:",
-      "consLabel": "Cons:",
-      "note": "You can change your model later in Settings - nothing is permanent.",
-      "recommendation": {
-        "label": "Recommendation:",
-        "text": "Based on your system specs, we recommend"
-      },
-      "toast": {
-        "selectModel": "Please select a model type",
-        "completeSetup": "Please complete setup to continue"
-      },
-      "models": {
-        "local": {
-          "title": "Local Models",
-          "subtitle": "Private, offline, and free - runs fully on your device.",
-          "description": "Great for privacy-focused users with capable hardware. No login required.",
-          "pros": {
-            "privacy": "Full privacy",
-            "offline": "Works offline"
-          },
-          "cons": {
-            "resources": "Uses device resources"
-          }
-        }
+      "title": "Set Up Ollama",
+      "subtitle": "Connect to Ollama to enable AI text formatting. You can skip this step if Ollama is not installed.",
+      "ollama": {
+        "urlLabel": "Ollama Server URL",
+        "urlHint": "Make sure Ollama is running before connecting.",
+        "connect": "Connect",
+        "selectModel": "Select a model",
+        "skip": "Skip",
+        "connectionFailed": "Could not connect to Ollama. Please check the URL and make sure Ollama is running.",
+        "saveFailed": "Failed to save Ollama settings. Please try again.",
+        "noModels": "No models found. Please install a model in Ollama first."
       }
     },
     "modelSetup": {
