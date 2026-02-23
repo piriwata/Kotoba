@@ -186,25 +186,6 @@ export class SettingsService extends EventEmitter {
   }
 
   /**
-   * Get OpenRouter configuration
-   */
-  async getOpenRouterConfig(): Promise<{ apiKey: string } | undefined> {
-    const config = await this.getModelProvidersConfig();
-    return config?.openRouter;
-  }
-
-  /**
-   * Update OpenRouter configuration
-   */
-  async setOpenRouterConfig(config: { apiKey: string }): Promise<void> {
-    const currentConfig = await this.getModelProvidersConfig();
-    await this.setModelProvidersConfig({
-      ...currentConfig,
-      openRouter: config,
-    });
-  }
-
-  /**
    * Get Ollama configuration
    */
   async getOllamaConfig(): Promise<{ url: string } | undefined> {

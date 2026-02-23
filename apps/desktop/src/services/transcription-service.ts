@@ -7,7 +7,6 @@ import {
 } from "../pipeline/core/pipeline-types";
 import { createDefaultContext } from "../pipeline/core/context";
 import { WhisperProvider } from "../pipeline/providers/transcription/whisper-provider";
-import { OpenRouterProvider } from "../pipeline/providers/formatting/openrouter-formatter";
 import { OllamaFormatter } from "../pipeline/providers/formatting/ollama-formatter";
 import { ModelService } from "./model-service";
 import { SettingsService } from "./settings-service";
@@ -611,28 +610,6 @@ export class TranscriptionService {
           logger.transcription.warn("Formatting skipped: model not found", {
             modelId,
           });
-        } else if (model.provider === "OpenRouter") {
-          const config = await this.settingsService.getOpenRouterConfig();
-          if (!config?.apiKey) {
-            logger.transcription.warn(
-              "Formatting skipped: OpenRouter API key missing",
-            );
-          } else {
-            logger.transcription.info("Starting formatting", {
-              provider: model.provider,
-              model: modelId,
-            });
-            const provider = new OpenRouterProvider(config.apiKey, modelId);
-            const result = await this.formatWithProvider(provider, text, {
-              style: options.formattingStyle,
-            });
-            if (result) {
-              text = result.text;
-              formattingDuration = result.duration;
-              formattingUsed = true;
-              formattingModel = modelId;
-            }
-          }
         } else if (model.provider === "Ollama") {
           const config = await this.settingsService.getOllamaConfig();
           if (!config?.url) {

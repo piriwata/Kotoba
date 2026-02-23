@@ -394,42 +394,6 @@ export const modelsRouter = createRouter({
     }),
 
   // Remove provider endpoints
-  removeOpenRouterProvider: procedure.mutation(async ({ ctx }) => {
-    const modelService = ctx.serviceManager.getService("modelService");
-    if (!modelService) {
-      throw new Error("Model manager service not initialized");
-    }
-
-    // Remove all OpenRouter models from database
-    await modelService.removeProviderModels("OpenRouter");
-
-    // Clear OpenRouter config from settings
-    const settingsService = ctx.serviceManager.getService("settingsService");
-    if (settingsService) {
-      const currentConfig = await settingsService.getModelProvidersConfig();
-      const updatedConfig = { ...currentConfig };
-      delete updatedConfig.openRouter;
-
-      // Clear default if it's an OpenRouter model
-      const allModels = await modelService.getSyncedProviderModels();
-      const openRouterModels = allModels.filter(
-        (m) => m.provider === "OpenRouter",
-      );
-      if (
-        currentConfig?.defaultLanguageModel &&
-        openRouterModels.some(
-          (m) => m.id === currentConfig.defaultLanguageModel,
-        )
-      ) {
-        updatedConfig.defaultLanguageModel = undefined;
-      }
-
-      await settingsService.setModelProvidersConfig(updatedConfig);
-    }
-
-    return true;
-  }),
-
   removeOllamaProvider: procedure.mutation(async ({ ctx }) => {
     const modelService = ctx.serviceManager.getService("modelService");
     if (!modelService) {

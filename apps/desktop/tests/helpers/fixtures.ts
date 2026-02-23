@@ -40,7 +40,6 @@ const defaultShortcuts = {
  */
 export const defaultAppSettings: AppSettingsData = {
   formatterConfig: {
-    modelId: "gpt-4o-mini",
     enabled: false,
   },
   ui: {
@@ -132,16 +131,6 @@ export const sampleModels: NewModel[] = [
     downloadedAt: new Date(),
     speed: 4,
     accuracy: 3,
-  },
-  {
-    id: "gpt-4o-mini",
-    provider: "openrouter",
-    name: "GPT-4o Mini",
-    type: "language",
-    context: "128k",
-    description: "Fast and efficient language model",
-    speed: 5,
-    accuracy: 4,
   },
 ];
 
