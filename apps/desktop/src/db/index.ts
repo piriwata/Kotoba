@@ -7,8 +7,26 @@ import * as schema from "./schema";
 
 // Get the user data directory for storing the database
 export const dbPath = app.isPackaged
-  ? path.join(app.getPath("userData"), "amical.db")
-  : path.join(process.cwd(), "amical.db");
+  ? path.join(app.getPath("userData"), "kotoba.db")
+  : path.join(process.cwd(), "kotoba.db");
+
+// Migrate from the old amical.db name if it exists (one-time rename)
+function migrateDbFilename(): void {
+  const dir = app.isPackaged ? app.getPath("userData") : process.cwd();
+  const legacyPath = path.join(dir, "amical.db");
+  if (fs.existsSync(legacyPath) && !fs.existsSync(dbPath)) {
+    fs.renameSync(legacyPath, dbPath);
+    // Also rename WAL/SHM sidecar files if present
+    for (const ext of ["-wal", "-shm"]) {
+      const legacySidecar = legacyPath + ext;
+      if (fs.existsSync(legacySidecar)) {
+        fs.renameSync(legacySidecar, dbPath + ext);
+      }
+    }
+  }
+}
+
+migrateDbFilename();
 
 export const db = drizzle(`file:${dbPath}`, {
   schema: {

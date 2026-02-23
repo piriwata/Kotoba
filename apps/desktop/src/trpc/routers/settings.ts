@@ -716,10 +716,9 @@ export const settingsRouter = createRouter({
       const userDataPath = app.getPath("userData");
 
       // Delete database files (main db + WAL/SHM files)
-      const dbFile = path.join(userDataPath, "amical.db");
-      await fs.rm(dbFile, { force: true }).catch(() => {});
-      await fs.rm(`${dbFile}-wal`, { force: true }).catch(() => {});
-      await fs.rm(`${dbFile}-shm`, { force: true }).catch(() => {});
+      await fs.rm(dbPath, { force: true }).catch(() => {});
+      await fs.rm(`${dbPath}-wal`, { force: true }).catch(() => {});
+      await fs.rm(`${dbPath}-shm`, { force: true }).catch(() => {});
 
       // Delete models directory
       const modelsDir = path.join(userDataPath, "models");

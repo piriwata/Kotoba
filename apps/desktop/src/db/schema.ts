@@ -162,12 +162,6 @@ export interface AppSettingsData {
     };
   };
   updateChannel?: "stable" | "beta";
-  featureFlags?: {
-    flags?: Record<string, string | boolean>;
-    payloads?: Record<string, unknown>;
-    lastFetchedAt?: string; // ISO 8601
-  };
-  dataMigrations?: Record<string, never>;
 }
 
 // Export types for TypeScript
