@@ -25,17 +25,11 @@ const SetShortcutSchema = z.object({
   shortcut: z.array(z.number()),
 });
 
-// Model providers schemas
-const OpenRouterConfigSchema = z.object({
-  apiKey: z.string(),
-});
-
 const OllamaConfigSchema = z.object({
   url: z.string().url().or(z.literal("")),
 });
 
 const ModelProvidersConfigSchema = z.object({
-  openRouter: OpenRouterConfigSchema.optional(),
   ollama: OllamaConfigSchema.optional(),
 });
 
@@ -489,33 +483,6 @@ export const settingsRouter = createRouter({
         const logger = ctx.serviceManager.getLogger();
         if (logger) {
           logger.main.error("Error setting model providers config:", error);
-        }
-        throw error;
-      }
-    }),
-
-  // Set OpenRouter configuration
-  setOpenRouterConfig: procedure
-    .input(OpenRouterConfigSchema)
-    .mutation(async ({ input, ctx }) => {
-      try {
-        const settingsService =
-          ctx.serviceManager.getService("settingsService");
-        if (!settingsService) {
-          throw new Error("SettingsService not available");
-        }
-        await settingsService.setOpenRouterConfig(input);
-
-        const logger = ctx.serviceManager.getLogger();
-        if (logger) {
-          logger.main.info("OpenRouter configuration updated");
-        }
-
-        return true;
-      } catch (error) {
-        const logger = ctx.serviceManager.getLogger();
-        if (logger) {
-          logger.main.error("Error setting OpenRouter config:", error);
         }
         throw error;
       }

@@ -16,7 +16,7 @@ interface ChangeDefaultModelDialogProps {
   onOpenChange: (open: boolean) => void;
   selectedModel: Model | undefined;
   onConfirm: () => void;
-  modelType?: "language" | "embedding";
+  modelType?: "language";
 }
 
 export default function ChangeDefaultModelDialog({

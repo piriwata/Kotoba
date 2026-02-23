@@ -33,7 +33,7 @@ import type { Model } from "@/db/schema";
 import { useTranslation } from "react-i18next";
 
 interface SyncedModelsListProps {
-  modelType: "language" | "embedding";
+  modelType: "language";
   title?: string;
 }
 
@@ -61,8 +61,6 @@ export default function SyncedModelsList({
   const syncedModelsQuery = api.models.getSyncedProviderModels.useQuery();
   const defaultLanguageModelQuery =
     api.models.getDefaultLanguageModel.useQuery();
-  const defaultEmbeddingModelQuery =
-    api.models.getDefaultEmbeddingModel.useQuery();
 
   const removeProviderModelMutation =
     api.models.removeProviderModel.useMutation({
@@ -92,56 +90,19 @@ export default function SyncedModelsList({
       },
     });
 
-  const setDefaultEmbeddingModelMutation =
-    api.models.setDefaultEmbeddingModel.useMutation({
-      onSuccess: () => {
-        utils.models.getDefaultEmbeddingModel.invalidate();
-        toast.success(
-          t("settings.aiModels.syncedModels.toast.defaultEmbeddingUpdated"),
-        );
-      },
-      onError: (error) => {
-        console.error("Failed to set default embedding model:", error);
-        toast.error(
-          t("settings.aiModels.syncedModels.toast.defaultEmbeddingFailed"),
-        );
-      },
-    });
-
   // Load synced models
   useEffect(() => {
     if (syncedModelsQuery.data) {
-      let filteredModels = syncedModelsQuery.data;
-
-      // For embedding models, only show Ollama models
-      if (modelType === "embedding") {
-        filteredModels = syncedModelsQuery.data.filter(
-          (model) => model.provider.toLowerCase() === "ollama",
-        );
-      }
-
-      setSyncedModels(filteredModels);
+      setSyncedModels(syncedModelsQuery.data);
     }
-  }, [syncedModelsQuery.data, modelType]);
+  }, [syncedModelsQuery.data]);
 
-  // Load default model based on type
+  // Load default model
   useEffect(() => {
-    if (
-      modelType === "language" &&
-      defaultLanguageModelQuery.data !== undefined
-    ) {
+    if (defaultLanguageModelQuery.data !== undefined) {
       setDefaultModel(defaultLanguageModelQuery.data || "");
-    } else if (
-      modelType === "embedding" &&
-      defaultEmbeddingModelQuery.data !== undefined
-    ) {
-      setDefaultModel(defaultEmbeddingModelQuery.data || "");
     }
-  }, [
-    modelType,
-    defaultLanguageModelQuery.data,
-    defaultEmbeddingModelQuery.data,
-  ]);
+  }, [defaultLanguageModelQuery.data]);
 
   // Delete confirmation functions
   const openDeleteDialog = (modelId: string) => {
@@ -175,11 +136,7 @@ export default function SyncedModelsList({
   };
 
   const confirmChangeDefault = () => {
-    if (modelType === "language") {
-      setDefaultLanguageModelMutation.mutate({ modelId: newDefaultModel });
-    } else {
-      setDefaultEmbeddingModelMutation.mutate({ modelId: newDefaultModel });
-    }
+    setDefaultLanguageModelMutation.mutate({ modelId: newDefaultModel });
     setNewDefaultModel("");
   };
 
@@ -188,11 +145,7 @@ export default function SyncedModelsList({
 
     // Clear default if removing the default model
     if (defaultModel === modelId) {
-      if (modelType === "language") {
-        setDefaultLanguageModelMutation.mutate({ modelId: null });
-      } else {
-        setDefaultEmbeddingModelMutation.mutate({ modelId: null });
-      }
+      setDefaultLanguageModelMutation.mutate({ modelId: null });
     }
   };
 

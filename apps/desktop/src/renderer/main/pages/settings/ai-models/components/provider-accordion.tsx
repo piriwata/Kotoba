@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 
 interface ProviderAccordionProps {
   provider: "Ollama";
-  modelType: "language" | "embedding";
+  modelType: "language";
 }
 
 export default function ProviderAccordion({
@@ -112,7 +112,6 @@ export default function ProviderAccordion({
         utils.settings.getModelProvidersConfig.invalidate();
         utils.models.getSyncedProviderModels.invalidate();
         utils.models.getDefaultLanguageModel.invalidate();
-        utils.models.getDefaultEmbeddingModel.invalidate();
         setStatus("disconnected");
         setInputValue("");
         toast.success(

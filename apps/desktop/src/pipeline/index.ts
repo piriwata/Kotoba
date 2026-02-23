@@ -21,4 +21,4 @@ export { TranscriptionService } from "../services/transcription-service";
 
 // Providers (if needed externally)
 export { WhisperProvider } from "./providers/transcription/whisper-provider";
-export { OpenRouterProvider } from "./providers/formatting/openrouter-formatter";
+export { OllamaFormatter } from "./providers/formatting/ollama-formatter";

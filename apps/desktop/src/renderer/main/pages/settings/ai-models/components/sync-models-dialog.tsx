@@ -20,7 +20,7 @@ interface SyncModelsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   provider: "Ollama";
-  modelType?: "language" | "embedding";
+  modelType?: "language";
 }
 
 export default function SyncModelsDialog({
@@ -31,10 +31,6 @@ export default function SyncModelsDialog({
 }: SyncModelsDialogProps) {
   const { t } = useTranslation();
   const providerLabel = t("settings.aiModels.providers.ollama");
-  const modelTypePrefix =
-    modelType === "embedding"
-      ? `${t("settings.aiModels.modelTypes.embedding")} `
-      : "";
 
   // Local state
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
@@ -48,8 +44,6 @@ export default function SyncModelsDialog({
   const syncedModelsQuery = api.models.getSyncedProviderModels.useQuery();
   const defaultLanguageModelQuery =
     api.models.getDefaultLanguageModel.useQuery();
-  const defaultEmbeddingModelQuery =
-    api.models.getDefaultEmbeddingModel.useQuery();
 
   const fetchOllamaModelsQuery = api.models.fetchOllamaModels.useQuery(
     { url: ollamaUrl },
@@ -61,7 +55,6 @@ export default function SyncModelsDialog({
       onSuccess: () => {
         utils.models.getSyncedProviderModels.invalidate();
         utils.models.getDefaultLanguageModel.invalidate();
-        utils.models.getDefaultEmbeddingModel.invalidate();
         toast.success(t("settings.aiModels.syncDialog.toast.synced"));
       },
       onError: (error: unknown) => {
@@ -74,13 +67,6 @@ export default function SyncModelsDialog({
     api.models.setDefaultLanguageModel.useMutation({
       onSuccess: () => {
         utils.models.getDefaultLanguageModel.invalidate();
-      },
-    });
-
-  const setDefaultEmbeddingModelMutation =
-    api.models.setDefaultEmbeddingModel.useMutation({
-      onSuccess: () => {
-        utils.models.getDefaultEmbeddingModel.invalidate();
       },
     });
 
@@ -134,18 +120,8 @@ export default function SyncModelsDialog({
       models: modelsToSync,
     });
 
-    if (modelType === "language" && modelsToSync.length > 0) {
-      if (!defaultLanguageModelQuery.data) {
-        setDefaultLanguageModelMutation.mutate({
-          modelId: modelsToSync[0].id,
-        });
-      }
-    } else if (
-      modelType === "embedding" &&
-      modelsToSync.length > 0 &&
-      !defaultEmbeddingModelQuery.data
-    ) {
-      setDefaultEmbeddingModelMutation.mutate({
+    if (modelsToSync.length > 0 && !defaultLanguageModelQuery.data) {
+      setDefaultLanguageModelMutation.mutate({
         modelId: modelsToSync[0].id,
       });
     }
@@ -166,13 +142,13 @@ export default function SyncModelsDialog({
           <DialogTitle>
             {t("settings.aiModels.syncDialog.title", {
               provider: providerLabel,
-              modelType: modelTypePrefix,
+              modelType: "",
             })}
           </DialogTitle>
           <DialogDescription>
             {t("settings.aiModels.syncDialog.description", {
               provider: providerLabel,
-              modelType: modelTypePrefix,
+              modelType: "",
             })}
           </DialogDescription>
         </DialogHeader>
