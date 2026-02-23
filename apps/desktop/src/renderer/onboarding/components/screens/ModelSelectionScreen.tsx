@@ -63,10 +63,7 @@ export function ModelSelectionScreen({
       const fetched = await utils.models.fetchOllamaModels.fetch({
         url: ollamaUrl,
       });
-      // Exclude embedding models (consistent with getModels type:"language" filter)
-      const languageModels = fetched.filter(
-        (m) => !m.name.toLowerCase().includes("embed"),
-      );
+      const languageModels = fetched;
       setModels(languageModels);
       if (languageModels.length > 0) {
         setSelectedModelId(languageModels[0].id);

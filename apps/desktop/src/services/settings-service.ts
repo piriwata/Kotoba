@@ -251,25 +251,6 @@ export class SettingsService extends EventEmitter {
   }
 
   /**
-   * Get default embedding model
-   */
-  async getDefaultEmbeddingModel(): Promise<string | undefined> {
-    const config = await this.getModelProvidersConfig();
-    return config?.defaultEmbeddingModel;
-  }
-
-  /**
-   * Set default embedding model
-   */
-  async setDefaultEmbeddingModel(modelId: string | undefined): Promise<void> {
-    const currentConfig = await this.getModelProvidersConfig();
-    await this.setModelProvidersConfig({
-      ...currentConfig,
-      defaultEmbeddingModel: modelId,
-    });
-  }
-
-  /**
    * Get app preferences (launch at login, minimize to tray, etc.)
    */
   async getPreferences(): Promise<AppPreferences> {

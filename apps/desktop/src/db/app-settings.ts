@@ -95,7 +95,6 @@ const defaultSettings: AppSettingsData = {
   modelProvidersConfig: {
     defaultSpeechModel: "",
     defaultLanguageModel: "",
-    defaultEmbeddingModel: "",
   },
 };
 

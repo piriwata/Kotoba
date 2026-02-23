@@ -49,7 +49,7 @@ interface ModelManagerEvents {
       | "auto-first-download"
       | "auto-after-deletion"
       | "cleared",
-    modelType: "speech" | "language" | "embedding",
+    modelType: "speech" | "language",
   ) => void;
 }
 
@@ -812,10 +812,7 @@ class ModelService extends EventEmitter {
       id: m.id!,
       provider: provider,
       name: m.name!,
-      type:
-        provider === "Ollama" && m.name && m.name.includes("embed")
-          ? "embedding"
-          : "language",
+      type: "language" as const,
       size: m.size || null,
       context: m.context || null,
       description: m.description || null,
@@ -865,21 +862,6 @@ class ModelService extends EventEmitter {
   }
 
   /**
-   * Get default embedding model
-   */
-  async getDefaultEmbeddingModel(): Promise<string | null> {
-    const modelId = await this.settingsService.getDefaultEmbeddingModel();
-    return modelId || null;
-  }
-
-  /**
-   * Set default embedding model
-   */
-  async setDefaultEmbeddingModel(modelId: string | null): Promise<void> {
-    await this.settingsService.setDefaultEmbeddingModel(modelId || undefined);
-  }
-
-  /**
    * Validate and clear invalid default models
    * Checks if default models still exist in the database
    * Clears any that don't exist and emits selection-changed events
@@ -924,31 +906,6 @@ class ModelService extends EventEmitter {
           null,
           "auto-after-deletion",
           "language",
-        );
-      }
-    }
-
-    // Check default embedding model
-    const defaultEmbeddingModel =
-      await this.settingsService.getDefaultEmbeddingModel();
-    if (defaultEmbeddingModel) {
-      // Check all models to find if this ID exists with any provider
-      const allModels = await getAllModels();
-      const modelExists = allModels.some(
-        (m) => m.id === defaultEmbeddingModel && m.type === "embedding",
-      );
-
-      if (!modelExists) {
-        logger.main.info("Clearing invalid default embedding model", {
-          modelId: defaultEmbeddingModel,
-        });
-        await this.settingsService.setDefaultEmbeddingModel(undefined);
-        this.emit(
-          "selection-changed",
-          defaultEmbeddingModel,
-          null,
-          "auto-after-deletion",
-          "embedding",
         );
       }
     }

@@ -15,7 +15,7 @@ export const modelsRouter = createRouter({
     .input(
       z.object({
         provider: z.string().optional(),
-        type: z.enum(["speech", "language", "embedding"]).optional(),
+        type: z.enum(["speech", "language"]).optional(),
         selectable: z.boolean().optional().default(false),
       }),
     )
@@ -75,27 +75,12 @@ export const modelsRouter = createRouter({
         return models;
       }
 
-      // For language/embedding models (provider models)
+      // For language models (provider models)
       let models = await modelService.getSyncedProviderModels();
 
       // Filter by provider if specified
       if (input.provider) {
         models = models.filter((m) => m.provider === input.provider);
-      }
-
-      // Filter by type if specified
-      if (input.type) {
-        models = models.filter((m) => {
-          if (input.type === "embedding") {
-            return (
-              m.provider === "Ollama" && m.name.toLowerCase().includes("embed")
-            );
-          }
-          // For language models, exclude embedding models
-          return !(
-            m.provider === "Ollama" && m.name.toLowerCase().includes("embed")
-          );
-        });
       }
 
       return models;
@@ -276,7 +261,7 @@ export const modelsRouter = createRouter({
   getDefaultModel: procedure
     .input(
       z.object({
-        type: z.enum(["speech", "language", "embedding"]),
+        type: z.enum(["speech", "language"]),
       }),
     )
     .query(async ({ input, ctx }) => {
@@ -290,15 +275,13 @@ export const modelsRouter = createRouter({
           return await modelService.getSelectedModel();
         case "language":
           return await modelService.getDefaultLanguageModel();
-        case "embedding":
-          return await modelService.getDefaultEmbeddingModel();
       }
     }),
 
   setDefaultModel: procedure
     .input(
       z.object({
-        type: z.enum(["speech", "language", "embedding"]),
+        type: z.enum(["speech", "language"]),
         modelId: z.string().nullable(),
       }),
     )
@@ -326,9 +309,6 @@ export const modelsRouter = createRouter({
         case "language":
           await modelService.setDefaultLanguageModel(input.modelId);
           break;
-        case "embedding":
-          await modelService.setDefaultEmbeddingModel(input.modelId);
-          break;
       }
       return true;
     }),
@@ -350,25 +330,6 @@ export const modelsRouter = createRouter({
         throw new Error("Model manager service not initialized");
       }
       await modelService.setDefaultLanguageModel(input.modelId);
-      return true;
-    }),
-
-  getDefaultEmbeddingModel: procedure.query(async ({ ctx }) => {
-    const modelService = ctx.serviceManager.getService("modelService");
-    if (!modelService) {
-      throw new Error("Model manager service not initialized");
-    }
-    return await modelService.getDefaultEmbeddingModel();
-  }),
-
-  setDefaultEmbeddingModel: procedure
-    .input(z.object({ modelId: z.string().nullable() }))
-    .mutation(async ({ input, ctx }) => {
-      const modelService = ctx.serviceManager.getService("modelService");
-      if (!modelService) {
-        throw new Error("Model manager service not initialized");
-      }
-      await modelService.setDefaultEmbeddingModel(input.modelId);
       return true;
     }),
 
@@ -419,13 +380,6 @@ export const modelsRouter = createRouter({
         ollamaModels.some((m) => m.id === currentConfig.defaultLanguageModel)
       ) {
         updatedConfig.defaultLanguageModel = undefined;
-      }
-
-      if (
-        currentConfig?.defaultEmbeddingModel &&
-        ollamaModels.some((m) => m.id === currentConfig.defaultEmbeddingModel)
-      ) {
-        updatedConfig.defaultEmbeddingModel = undefined;
       }
 
       await settingsService.setModelProvidersConfig(updatedConfig);
@@ -571,7 +525,7 @@ export const modelsRouter = createRouter({
         | "auto-first-download"
         | "auto-after-deletion"
         | "cleared";
-      modelType: "speech" | "language" | "embedding";
+      modelType: "speech" | "language";
     }>((emit) => {
       const modelService = ctx.serviceManager.getService("modelService");
       if (!modelService) {
@@ -586,7 +540,7 @@ export const modelsRouter = createRouter({
           | "auto-first-download"
           | "auto-after-deletion"
           | "cleared",
-        modelType: "speech" | "language" | "embedding",
+        modelType: "speech" | "language",
       ) => {
         emit.next({ oldModelId, newModelId, reason, modelType });
       };
