@@ -21,53 +21,6 @@ export const widgetRouter = createRouter({
       return true;
     }),
 
-  openNotesWindow: procedure
-    .input(
-      z
-        .object({
-          noteId: z.number().int().positive().optional(),
-        })
-        .optional(),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const windowManager = ctx.serviceManager.getService("windowManager");
-      if (!windowManager) {
-        logger.main.error("Window manager service not available");
-        return false;
-      }
-
-      windowManager.openNotesWindow(input?.noteId);
-      logger.main.info("Opened notes window", {
-        noteId: input?.noteId,
-      });
-      return true;
-    }),
-
-  closeNotesWindow: procedure.mutation(async ({ ctx }) => {
-    const windowManager = ctx.serviceManager.getService("windowManager");
-    if (!windowManager) {
-      logger.main.error("Window manager service not available");
-      return false;
-    }
-
-    windowManager.closeNotesWindow();
-
-    // Closing the notes window should immediately return to normal visibility rules.
-    const settingsService = ctx.serviceManager.getService("settingsService");
-    const recordingManager = ctx.serviceManager.getService("recordingManager");
-    const preferences = await settingsService.getPreferences();
-    const isIdle = recordingManager.getState() === "idle";
-
-    if (preferences.showWidgetWhileInactive || !isIdle) {
-      windowManager.showWidget();
-    } else {
-      windowManager.hideWidget();
-    }
-
-    logger.main.info("Closed notes window");
-    return true;
-  }),
-
   // Navigate to a route in the main window (show and focus it first)
   navigateMainWindow: procedure
     .input(

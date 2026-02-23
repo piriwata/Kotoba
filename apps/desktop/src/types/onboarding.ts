@@ -19,7 +19,6 @@ export enum OnboardingScreen {
 
 export enum FeatureInterest {
   ContextualDictation = "contextual_dictation",
-  NoteTaking = "note_taking",
   MeetingTranscriptions = "meeting_transcriptions",
   VoiceCommands = "voice_commands",
 }

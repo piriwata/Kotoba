@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { OnboardingLayout } from "../shared/OnboardingLayout";
 import { NavigationButtons } from "../shared/NavigationButtons";
-import { Mic, FileText, Users, Command } from "lucide-react";
+import { Mic, Users, Command } from "lucide-react";
 import { FeatureInterest } from "../../../../types/onboarding";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -37,12 +37,6 @@ export function WelcomeScreen({
         "onboarding.welcome.features.contextualDictation.description",
       ),
       icon: Mic,
-    },
-    {
-      id: FeatureInterest.NoteTaking,
-      title: t("onboarding.welcome.features.noteTaking.title"),
-      description: t("onboarding.welcome.features.noteTaking.description"),
-      icon: FileText,
     },
     {
       id: FeatureInterest.MeetingTranscriptions,

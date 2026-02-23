@@ -12,8 +12,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { CommandSearchButton } from "./command-search-button";
-import { CreateNoteButton } from "./create-note-button";
 import { SETTINGS_NAV_ITEMS } from "../lib/settings-navigation";
 
 export function SettingsSidebar({
@@ -66,12 +64,6 @@ export function SettingsSidebar({
                 </span>
               </div>
             </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <CreateNoteButton />
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <CommandSearchButton />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

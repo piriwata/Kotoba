@@ -167,21 +167,7 @@ export class AppManager {
   }
 
   private setupShortcutEventListeners(shortcutManager: ShortcutManager): void {
-    shortcutManager.on("open-notes-window-triggered", () => {
-      void this.handleOpenNotesWindowShortcut();
-    });
-
     logger.main.info("Shortcut listeners connected in AppManager");
-  }
-
-  private async handleOpenNotesWindowShortcut(): Promise<void> {
-    try {
-      this.windowManager.openNotesWindow();
-    } catch (error) {
-      logger.main.error("Failed to open notes window from shortcut", {
-        error,
-      });
-    }
   }
 
   private setupSettingsEventListeners(settingsService: SettingsService): void {
@@ -292,7 +278,6 @@ export class AppManager {
 
     // When a second instance tries to start, focus our existing window
     const mainWindow = this.windowManager.getMainWindow();
-    const notesWindow = this.windowManager.getNotesWindow();
     const widgetWindow = this.windowManager.getWidgetWindow();
 
     // Try to show and focus the main window first
@@ -302,9 +287,6 @@ export class AppManager {
       }
       mainWindow.focus();
       mainWindow.show();
-    } else if (notesWindow && !notesWindow.isDestroyed()) {
-      notesWindow.focus();
-      notesWindow.show();
     } else if (widgetWindow && !widgetWindow.isDestroyed()) {
       // If no main window, focus the widget window
       widgetWindow.focus();

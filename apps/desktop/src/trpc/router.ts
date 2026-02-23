@@ -5,7 +5,6 @@ import { modelsRouter } from "./routers/models";
 import { settingsRouter } from "./routers/settings";
 import { recordingRouter } from "./routers/recording";
 import { widgetRouter } from "./routers/widget";
-import { notesRouter } from "./routers/notes";
 import { onboardingRouter } from "./routers/onboarding";
 import { featureFlagsRouter } from "./routers/feature-flags";
 import { createRouter, procedure } from "./trpc";
@@ -52,9 +51,6 @@ export const router = createRouter({
 
   // Widget router
   widget: widgetRouter,
-
-  // Notes router
-  notes: notesRouter,
 
   // Onboarding router
   onboarding: onboardingRouter,
