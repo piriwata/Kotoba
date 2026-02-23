@@ -141,34 +141,17 @@
       }
     },
     "modelSelection": {
-      "title": "Elige tu modelo de IA",
-      "subtitle": "Selecciona cómo quieres que Amical procese tu audio",
-      "completeSetupToContinue": "Completa la configuración para continuar",
-      "recommended": "Recomendado",
-      "prosLabel": "Ventajas:",
-      "consLabel": "Desventajas:",
-      "note": "Puedes cambiar tu modelo más tarde en Configuración; nada es permanente.",
-      "recommendation": {
-        "label": "Recomendación:",
-        "text": "Según las especificaciones de tu sistema, recomendamos"
-      },
-      "toast": {
-        "selectModel": "Por favor selecciona un tipo de modelo",
-        "completeSetup": "Por favor completa la configuración para continuar"
-      },
-      "models": {
-        "local": {
-          "title": "Modelos locales",
-          "subtitle": "Privado, sin conexión y gratuito; se ejecuta completamente en tu dispositivo.",
-          "description": "Ideal para usuarios enfocados en la privacidad con hardware capaz. No requiere inicio de sesión.",
-          "pros": {
-            "privacy": "Privacidad total",
-            "offline": "Funciona sin conexión"
-          },
-          "cons": {
-            "resources": "Usa recursos del dispositivo"
-          }
-        }
+      "title": "Configurar Ollama",
+      "subtitle": "Conéctate a Ollama para habilitar el formateo de texto con IA. Puedes omitir este paso si Ollama no está instalado.",
+      "ollama": {
+        "urlLabel": "URL del servidor Ollama",
+        "urlHint": "Asegúrate de que Ollama esté en ejecución antes de conectarte.",
+        "connect": "Conectar",
+        "selectModel": "Seleccionar un modelo",
+        "skip": "Omitir",
+        "connectionFailed": "No se pudo conectar a Ollama. Verifica la URL y asegúrate de que Ollama esté en ejecución.",
+        "saveFailed": "Error al guardar la configuración de Ollama. Por favor, inténtalo de nuevo.",
+        "noModels": "No se encontraron modelos. Primero instala un modelo en Ollama."
       }
     },
     "modelSetup": {

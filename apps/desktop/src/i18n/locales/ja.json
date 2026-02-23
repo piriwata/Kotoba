@@ -141,34 +141,17 @@
       }
     },
     "modelSelection": {
-      "title": "AIモデルを選択",
-      "subtitle": "Amicalがオーディオを処理する方法を選択してください",
-      "completeSetupToContinue": "続行するにはセットアップを完了してください",
-      "recommended": "おすすめ",
-      "prosLabel": "メリット：",
-      "consLabel": "デメリット：",
-      "note": "モデルは後から設定で変更できます。",
-      "recommendation": {
-        "label": "おすすめ：",
-        "text": "お使いのシステムのスペックに基づき、おすすめは"
-      },
-      "toast": {
-        "selectModel": "モデルタイプを選択してください",
-        "completeSetup": "続行するにはセットアップを完了してください"
-      },
-      "models": {
-        "local": {
-          "title": "ローカルモデル",
-          "subtitle": "プライベート・オフライン・無料 - デバイス上で完全に動作",
-          "description": "プライバシーを重視する方や、高性能なハードウェアをお持ちの方に最適です。ログイン不要。",
-          "pros": {
-            "privacy": "完全なプライバシー",
-            "offline": "オフラインで動作"
-          },
-          "cons": {
-            "resources": "デバイスのリソースを使用"
-          }
-        }
+      "title": "Ollama のセットアップ",
+      "subtitle": "Ollama に接続してAIテキスト整形を有効にします。Ollama をまだインストールしていない場合はスキップできます。",
+      "ollama": {
+        "urlLabel": "Ollama サーバー URL",
+        "urlHint": "接続する前に Ollama が起動していることを確認してください。",
+        "connect": "接続",
+        "selectModel": "モデルを選択",
+        "skip": "スキップ",
+        "connectionFailed": "Ollama に接続できませんでした。URL を確認し、Ollama が起動していることをご確認ください。",
+        "saveFailed": "Ollama の設定の保存に失敗しました。もう一度お試しください。",
+        "noModels": "モデルが見つかりません。先に Ollama でモデルをインストールしてください。"
       }
     },
     "modelSetup": {
