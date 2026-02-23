@@ -30,24 +30,6 @@ export const transcriptions = sqliteTable("transcriptions", {
     .default(sql`(unixepoch())`),
 });
 
-// Vocabulary table
-export const vocabulary = sqliteTable("vocabulary", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  word: text("word").notNull().unique(),
-  replacementWord: text("replacement_word"),
-  isReplacement: integer("is_replacement", { mode: "boolean" }).default(false),
-  dateAdded: integer("date_added", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
-  usageCount: integer("usage_count").default(0), // How many times this word appeared in transcriptions
-  createdAt: integer("created_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
-});
-
 // App settings table with typed JSON
 export const appSettings = sqliteTable("app_settings", {
   id: integer("id").primaryKey(),
@@ -191,8 +173,6 @@ export interface AppSettingsData {
 // Export types for TypeScript
 export type Transcription = typeof transcriptions.$inferSelect;
 export type NewTranscription = typeof transcriptions.$inferInsert;
-export type Vocabulary = typeof vocabulary.$inferSelect;
-export type NewVocabulary = typeof vocabulary.$inferInsert;
 export type Model = typeof models.$inferSelect;
 export type NewModel = typeof models.$inferInsert;
 export type AppSettings = typeof appSettings.$inferSelect;

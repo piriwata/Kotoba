@@ -42,7 +42,6 @@ export interface TranscriptionMetrics {
   vad_enabled?: boolean;
   session_type?: "streaming" | "batch";
   language?: string;
-  vocabulary_size?: number;
 }
 
 /**

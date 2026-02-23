@@ -289,10 +289,6 @@
         "title": "ショートカット",
         "description": "キーボードショートカットとホットキーをカスタマイズ"
       },
-      "vocabulary": {
-        "title": "カスタム辞書",
-        "description": "カスタム辞書と単語認識を管理"
-      },
       "aiModels": {
         "title": "AIモデル",
         "description": "AIモデルとプロバイダーを設定"
@@ -433,7 +429,6 @@
           "items": {
             "transcriptions": "すべての文字起こし",
             "notes": "すべてのノート",
-            "vocabulary": "カスタム辞書",
             "settings": "すべての設定と環境設定",
             "models": "ダウンロードしたモデル"
           },
@@ -659,40 +654,6 @@
           "description": "カレンダーを接続して始めましょう",
           "button": "カレンダーを接続"
         }
-      }
-    },
-    "vocabulary": {
-      "title": "カスタム辞書",
-      "description": "音声入力用のカスタム辞書と単語置換を管理します。",
-      "addButton": "単語を追加",
-      "loading": "カスタム辞書を読み込み中...",
-      "empty": "カスタム辞書が見つかりません。最初の単語を追加して始めましょう。",
-      "toast": {
-        "added": "単語をカスタム辞書に追加しました",
-        "addFailed": "単語の追加に失敗しました: {{message}}",
-        "updated": "カスタム辞書を更新しました",
-        "updateFailed": "単語の更新に失敗しました: {{message}}",
-        "deleted": "単語をカスタム辞書から削除しました",
-        "deleteFailed": "単語の削除に失敗しました: {{message}}"
-      },
-      "dialog": {
-        "addTitle": "カスタム辞書に追加",
-        "editTitle": "カスタム辞書を編集",
-        "replacementLabel": "置換にする",
-        "misspellingPlaceholder": "誤ったスペル",
-        "correctSpellingPlaceholder": "正しいスペル",
-        "newWordPlaceholder": "新しい単語を追加",
-        "cancel": "キャンセル",
-        "saving": "保存中...",
-        "addWord": "単語を追加",
-        "saveChanges": "変更を保存"
-      },
-      "delete": {
-        "title": "カスタム辞書を削除",
-        "description": "「{{item}}」を削除してもよろしいですか？この操作は元に戻せません。",
-        "cancel": "キャンセル",
-        "deleting": "削除中...",
-        "confirm": "削除"
       }
     },
     "aiModels": {

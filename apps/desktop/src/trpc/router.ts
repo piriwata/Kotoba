@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { vocabularyRouter } from "./routers/vocabulary";
 import { transcriptionsRouter } from "./routers/transcriptions";
 import { modelsRouter } from "./routers/models";
 import { settingsRouter } from "./routers/settings";
@@ -33,9 +32,6 @@ export const router = createRouter({
       timestamp: new Date(),
     };
   }),
-
-  // Vocabulary router
-  vocabulary: vocabularyRouter,
 
   // Transcriptions router
   transcriptions: transcriptionsRouter,

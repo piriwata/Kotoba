@@ -4,41 +4,15 @@ import { FormatParams } from "../../core/pipeline-types";
 // Note: Prompts are intentionally treated as "code" and should be updated with care.
 
 /**
- * Context for formatting transcription
- */
-export interface FormattingContext {
-  /** Custom vocabulary terms to preserve */
-  vocabulary?: string[];
-}
-
-/**
- * Build vocabulary instruction string using XML tags
- */
-function buildVocabInstruction(vocabulary?: string[]): string {
-  if (!vocabulary || vocabulary.length === 0) {
-    return "";
-  }
-  return `\n\n<vocabulary>${vocabulary.join(", ")}</vocabulary>`;
-}
-
-/**
  * Build the structured formatting prompt (best performing in evals - structured-v2)
  *
- * @param context - Formatting context with vocabulary
  * @returns Object with systemPrompt and userPrompt builder
  */
-export function buildFormattingPrompt(context: FormattingContext): {
+export function buildFormattingPrompt(): {
   systemPrompt: string;
   userPrompt: (input: string) => string;
 } {
-  const { vocabulary } = context;
-  const vocabInstr = buildVocabInstruction(vocabulary);
-
   const systemPrompt = `# Text Formatting Task
-
-## Vocabulary Format
-Context is provided using XML tags when available:
-- <vocabulary>...</vocabulary> - Custom jargon and vocabulary. The input transcription from Whisper might have missed the vocabulary and interpreted them as different tokens. Based on the transcription and similarities of words, replace words in input with words from vocabulary as needed.
 
 ## Rules
 - NEVER add greetings (Hi, Hello, Hey, Dear) unless the input STARTS with one
@@ -52,9 +26,7 @@ Context is provided using XML tags when available:
 - FIX grammar: add missing articles, fix verb tense, improve flow
 - FIX punctuation: periods, commas, question marks
 - FIX capitalization: sentence starts, proper nouns, acronyms
-- APPLY vocabulary corrections from <vocabulary> tag if provided
 - ADD paragraph breaks where appropriate between distinct sections or topics
-${vocabInstr}
 
 ## Examples
 
@@ -88,13 +60,9 @@ ${vocabInstr}
 /**
  * Wrapper for the desktop pipeline's FormatParams context.
  */
-export function constructFormatterPrompt(context: FormatParams["context"]): {
+export function constructFormatterPrompt(_context: FormatParams["context"]): {
   systemPrompt: string;
   userPrompt: (input: string) => string;
 } {
-  const { vocabulary } = context;
-
-  return buildFormattingPrompt({
-    vocabulary: vocabulary && vocabulary.length > 0 ? vocabulary : undefined,
-  });
+  return buildFormattingPrompt();
 }

@@ -19,14 +19,12 @@ import {
   getTranscriptionById,
   updateTranscription,
 } from "../db/transcriptions";
-import { getVocabulary } from "../db/vocabulary";
 import { logger } from "../main/logger";
 import { v4 as uuid } from "uuid";
 import { VADService } from "./vad-service";
 import { Mutex } from "async-mutex";
 import { dialog } from "electron";
 import { AppError, ErrorCodes } from "../types/error";
-import { applyTextReplacements } from "../utils/text-replacement";
 import * as fs from "node:fs";
 
 /**
@@ -271,7 +269,6 @@ export class TranscriptionService {
         speechProbability: speechProbability,
         context: {
           sessionId,
-          vocabulary: session.context.sharedData.vocabulary,
           previousChunk,
           aggregatedTranscription: aggregatedTranscription || undefined,
           language: session.context.sharedData.userPreferences?.language,
@@ -368,7 +365,6 @@ export class TranscriptionService {
         const provider = await this.selectProvider();
         const finalTranscription = await provider.flush({
           sessionId,
-          vocabulary: session.context.sharedData.vocabulary,
           previousChunk,
           aggregatedTranscription: aggregatedTranscription || undefined,
           language: session.context.sharedData.userPreferences?.language,
@@ -400,8 +396,6 @@ export class TranscriptionService {
 
       const formatResult = await this.applyFormattingAndReplacements({
         text: completeTranscription,
-        vocabulary: session.context.sharedData.vocabulary,
-        replacements: session.context.sharedData.replacements,
         formattingStyle:
           session.context.sharedData.userPreferences?.formattingStyle,
       });
@@ -427,7 +421,6 @@ export class TranscriptionService {
         meta: {
           sessionId,
           source: session.context.sharedData.audioMetadata?.source,
-          vocabularySize: session.context.sharedData.vocabulary?.length || 0,
           formattingStyle:
             session.context.sharedData.userPreferences?.formattingStyle,
         },
@@ -487,7 +480,6 @@ export class TranscriptionService {
         vad_enabled: !!this.vadService,
         session_type: "streaming",
         language: session.context.sharedData.userPreferences?.language || "en",
-        vocabulary_size: session.context.sharedData.vocabulary?.length || 0,
       });
 
       this.streamingSessions.delete(sessionId);
@@ -538,19 +530,6 @@ export class TranscriptionService {
           : dictationSettings.selectedLanguage || "en";
     }
 
-    // Load vocabulary and replacements
-    const vocabEntries = await getVocabulary({ limit: 50 });
-    for (const entry of vocabEntries) {
-      if (entry.isReplacement) {
-        context.sharedData.replacements.set(
-          entry.word,
-          entry.replacementWord || "",
-        );
-      } else {
-        context.sharedData.vocabulary.push(entry.word);
-      }
-    }
-
     // TODO: Load formatter config from settings
 
     return context;
@@ -561,7 +540,6 @@ export class TranscriptionService {
     text: string,
     context: {
       style?: string;
-      vocabulary?: string[];
     },
   ): Promise<{ text: string; duration: number } | null> {
     const startTime = performance.now();
@@ -571,7 +549,6 @@ export class TranscriptionService {
         text,
         context: {
           style: context.style,
-          vocabulary: context.vocabulary,
           aggregatedTranscription: text,
         },
       });
@@ -594,13 +571,10 @@ export class TranscriptionService {
   }
 
   /**
-   * Shared formatting and vocabulary replacement logic used by both
-   * finalizeSession and retryTranscription.
+   * Shared formatting logic used by both finalizeSession and retryTranscription.
    */
   private async applyFormattingAndReplacements(options: {
     text: string;
-    vocabulary?: string[];
-    replacements: Map<string, string>;
     formattingStyle?: string;
   }): Promise<{
     text: string;
@@ -651,7 +625,6 @@ export class TranscriptionService {
             const provider = new OpenRouterProvider(config.apiKey, modelId);
             const result = await this.formatWithProvider(provider, text, {
               style: options.formattingStyle,
-              vocabulary: options.vocabulary,
             });
             if (result) {
               text = result.text;
@@ -672,7 +645,6 @@ export class TranscriptionService {
             const provider = new OllamaFormatter(config.url, modelId);
             const result = await this.formatWithProvider(provider, text, {
               style: options.formattingStyle,
-              vocabulary: options.vocabulary,
             });
             if (result) {
               text = result.text;
@@ -687,19 +659,6 @@ export class TranscriptionService {
             { provider: model.provider },
           );
         }
-      }
-    }
-
-    // Apply vocabulary replacements (final post-processing step)
-    if (options.replacements.size > 0) {
-      const beforeReplacements = text;
-      text = applyTextReplacements(text, options.replacements);
-      if (beforeReplacements !== text) {
-        logger.transcription.info("Applied vocabulary replacements", {
-          replacementCount: options.replacements.size,
-          originalLength: beforeReplacements.length,
-          newLength: text.length,
-        });
       }
     }
 
@@ -752,9 +711,8 @@ export class TranscriptionService {
     // Read WAV file into Float32Array
     const audioData = await this.readWavAsFloat32(record.audioFile);
 
-    // Build fresh context for vocabulary, language, and replacements
+    // Build fresh context for language preference
     const context = await this.buildContext();
-    const vocabulary = context.sharedData.vocabulary;
     const language = context.sharedData.userPreferences?.language;
 
     // Determine formatting config before acquiring mutex
@@ -813,7 +771,6 @@ export class TranscriptionService {
           audioData: frames[i],
           speechProbability: vadProbs[i],
           context: {
-            vocabulary,
             language,
             previousChunk,
             aggregatedTranscription: aggregatedTranscription || undefined,
@@ -829,7 +786,6 @@ export class TranscriptionService {
       // Flush to get remaining buffered audio
       const aggregatedTranscription = transcriptionResults.join("");
       const finalTranscription = await provider.flush({
-        vocabulary,
         language,
         aggregatedTranscription: aggregatedTranscription || undefined,
         formattingEnabled: false,
@@ -845,11 +801,9 @@ export class TranscriptionService {
 
     let rawTranscription = transcriptionResults.join("");
 
-    // Apply formatting and vocabulary replacements
+    // Apply formatting
     const formatResult = await this.applyFormattingAndReplacements({
       text: rawTranscription,
-      vocabulary,
-      replacements: context.sharedData.replacements,
       formattingStyle: context.sharedData.userPreferences?.formattingStyle,
     });
 
