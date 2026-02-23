@@ -5,6 +5,7 @@ export const setupApplicationMenu = async (
   createOrShowSettingsWindow: () => void,
   openAllDevTools?: () => void,
   locale?: string | null,
+  checkForUpdates?: () => void,
 ) => {
   const i18n = await initMainI18n(locale);
   const t = i18n.t.bind(i18n);
@@ -17,6 +18,11 @@ export const setupApplicationMenu = async (
             label: app.name,
             submenu: [
               { role: "about" as const },
+              { type: "separator" as const },
+              {
+                label: t("menu.checkForUpdates"),
+                click: () => checkForUpdates?.(),
+              },
               { type: "separator" as const },
               {
                 label: t("menu.settings"),
@@ -45,6 +51,10 @@ export const setupApplicationMenu = async (
                 label: t("menu.settings"),
                 accelerator: "CmdOrCtrl+,",
                 click: () => createOrShowSettingsWindow(),
+              },
+              {
+                label: t("menu.checkForUpdates"),
+                click: () => checkForUpdates?.(),
               },
               { type: "separator" as const },
               { role: "quit" as const },

@@ -454,7 +454,8 @@
       "title": "Acerca de",
       "description": "Información de versión, recursos y enlaces de soporte",
       "toast": {
-        "upToDate": "La versión está actualizada"
+        "upToDate": "La versión está actualizada",
+        "checkFailed": "No se pudo verificar las actualizaciones. Por favor, inténtalo de nuevo."
       },
       "currentVersion": "Versión actual",
       "resources": {
@@ -479,7 +480,9 @@
         "title": "Contacto",
         "description": "Ponte en contacto con nuestro equipo para soporte y consultas",
         "emailCta": "Envíanos un correo electrónico"
-      }
+      },
+      "checkForUpdates": "Buscar actualizaciones",
+      "checking": "Verificando..."
     },
     "history": {
       "title": "Historial",
@@ -813,5 +816,11 @@
         }
       }
     }
+  },
+  "updateDialog": {
+    "title": "Actualización disponible",
+    "description": "La versión {{version}} está disponible. Descarga la última versión para obtener nuevas funciones y correcciones de errores.",
+    "dismiss": "Descartar",
+    "download": "Descargar actualización"
   }
 }

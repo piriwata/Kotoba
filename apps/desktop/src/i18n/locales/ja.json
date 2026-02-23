@@ -454,7 +454,8 @@
       "title": "Amicalについて",
       "description": "バージョン情報、リソース、サポートリンク",
       "toast": {
-        "upToDate": "最新バージョンです"
+        "upToDate": "最新バージョンです",
+        "checkFailed": "アップデートの確認に失敗しました。もう一度お試しください。"
       },
       "currentVersion": "現在のバージョン",
       "resources": {
@@ -479,7 +480,9 @@
         "title": "お問い合わせ",
         "description": "サポートやお問い合わせはチームまでご連絡ください",
         "emailCta": "メールを送る"
-      }
+      },
+      "checkForUpdates": "アップデートを確認",
+      "checking": "確認中..."
     },
     "history": {
       "title": "履歴",
@@ -813,5 +816,11 @@
         }
       }
     }
+  },
+  "updateDialog": {
+    "title": "アップデートが利用可能です",
+    "description": "バージョン {{version}} が利用可能です。最新リリースをダウンロードして新機能とバグ修正を入手してください。",
+    "dismiss": "閉じる",
+    "download": "アップデートをダウンロード"
   }
 }

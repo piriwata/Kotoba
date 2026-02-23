@@ -250,6 +250,16 @@ export class AppManager {
       () => this.windowManager.createOrShowMainWindow(),
       () => this.windowManager.openAllDevTools(),
       locale,
+      () => {
+        const existingWindow = this.windowManager.getMainWindow();
+        if (existingWindow && !existingWindow.isDestroyed()) {
+          existingWindow.show();
+          existingWindow.focus();
+          existingWindow.webContents.send("navigate", "/settings/about");
+        } else {
+          this.windowManager.createOrShowMainWindow("/settings/about");
+        }
+      },
     );
     return locale;
   }

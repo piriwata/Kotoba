@@ -454,7 +454,8 @@
       "title": "About",
       "description": "Version information, resources, and support links",
       "toast": {
-        "upToDate": "Version is up to date"
+        "upToDate": "Version is up to date",
+        "checkFailed": "Failed to check for updates. Please try again."
       },
       "currentVersion": "Current Version",
       "resources": {
@@ -479,7 +480,9 @@
         "title": "Contact",
         "description": "Get in touch with our team for support and inquiries",
         "emailCta": "Send us an email"
-      }
+      },
+      "checkForUpdates": "Check for Updates",
+      "checking": "Checking..."
     },
     "history": {
       "title": "History",
@@ -813,5 +816,11 @@
         }
       }
     }
+  },
+  "updateDialog": {
+    "title": "Update Available",
+    "description": "Version {{version}} is available. Download the latest release to get new features and bug fixes.",
+    "dismiss": "Dismiss",
+    "download": "Download Update"
   }
 }

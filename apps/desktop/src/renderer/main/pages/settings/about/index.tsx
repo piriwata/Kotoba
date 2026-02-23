@@ -6,6 +6,7 @@ import { RefreshCw, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/trpc/react";
 import { useTranslation } from "react-i18next";
+import { UpdateDialog } from "@/components/update-dialog";
 
 const CHANGELOG_URL = "https://github.com/amicalhq/amical/releases";
 const GITHUB_URL = "https://github.com/amicalhq/amical";
@@ -15,14 +16,43 @@ const CONTACT_EMAIL = "contact@amical.ai";
 export default function AboutSettingsPage() {
   const { t } = useTranslation();
   const [checking, setChecking] = useState(false);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [updateInfo, setUpdateInfo] = useState<{
+    latestVersion: string;
+    releaseUrl: string;
+    releaseNotes: string | null;
+  } | null>(null);
   const { data: version } = api.settings.getAppVersion.useQuery();
 
-  function handleCheckUpdates() {
+  const checkForUpdatesQuery = api.settings.checkForUpdates.useQuery(
+    undefined,
+    { enabled: false },
+  );
+
+  async function handleCheckUpdates() {
     setChecking(true);
-    setTimeout(() => {
+    try {
+      const result = await checkForUpdatesQuery.refetch();
+      const data = result.data;
+      if (!data) {
+        toast.error(t("settings.about.toast.checkFailed"));
+        return;
+      }
+      if (data.updateAvailable) {
+        setUpdateInfo({
+          latestVersion: data.latestVersion,
+          releaseUrl: data.releaseUrl,
+          releaseNotes: data.releaseNotes,
+        });
+        setUpdateDialogOpen(true);
+      } else {
+        toast.success(t("settings.about.toast.upToDate"));
+      }
+    } catch {
+      toast.error(t("settings.about.toast.checkFailed"));
+    } finally {
       setChecking(false);
-      toast.success(t("settings.about.toast.upToDate"));
-    }, 2000);
+    }
   }
 
   return (
@@ -46,7 +76,7 @@ export default function AboutSettingsPage() {
                 v{version || "..."}
               </Badge>
             </div>
-            {/* <Button
+            <Button
               variant="outline"
               className="mt-4 md:mt-0 flex items-center gap-2"
               onClick={handleCheckUpdates}
@@ -55,8 +85,10 @@ export default function AboutSettingsPage() {
               <RefreshCw
                 className={"w-4 h-4 " + (checking ? "animate-spin" : "")}
               />
-              {checking ? "Checking..." : "Check for Updates"}
-            </Button> */}
+              {checking
+                ? t("settings.about.checking")
+                : t("settings.about.checkForUpdates")}
+            </Button>
           </CardContent>
         </Card>
 
@@ -149,6 +181,11 @@ export default function AboutSettingsPage() {
           </CardContent>
         </Card>
       </div>
+      <UpdateDialog
+        isOpen={updateDialogOpen}
+        onClose={() => setUpdateDialogOpen(false)}
+        updateInfo={updateInfo}
+      />
     </div>
   );
 }

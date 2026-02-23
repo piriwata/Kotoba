@@ -77,6 +77,29 @@ const RecordingSettingsSchema = z.object({
   preferredMicrophoneName: z.string().optional(),
 });
 
+/**
+ * Simple semver comparison: returns true if `a` is strictly newer than `b`.
+ * Handles versions like "1.2.3" and "1.2.3-beta.1".
+ */
+function isNewerVersion(a: string, b: string): boolean {
+  const parse = (v: string) => {
+    const [core, pre] = v.split("-");
+    const parts = (core ?? "").split(".").map(Number);
+    return { major: parts[0] ?? 0, minor: parts[1] ?? 0, patch: parts[2] ?? 0, pre: pre ?? null };
+  };
+  const va = parse(a);
+  const vb = parse(b);
+  if (va.major !== vb.major) return va.major > vb.major;
+  if (va.minor !== vb.minor) return va.minor > vb.minor;
+  if (va.patch !== vb.patch) return va.patch > vb.patch;
+  // A pre-release is older than the release (e.g. 1.0.0-beta < 1.0.0)
+  if (va.pre && !vb.pre) return false;
+  if (!va.pre && vb.pre) return true;
+  // Both have pre-release: compare lexicographically
+  if (va.pre && vb.pre) return va.pre > vb.pre;
+  return false;
+}
+
 export const settingsRouter = createRouter({
   // Get all settings
   getSettings: procedure.query(async ({ ctx }) => {
@@ -369,6 +392,68 @@ export const settingsRouter = createRouter({
   // Get app version
   getAppVersion: procedure.query(() => {
     return app.getVersion();
+  }),
+
+  // Check for updates by querying GitHub releases
+  checkForUpdates: procedure.query(async ({ ctx }) => {
+    const currentVersion = app.getVersion();
+    const settingsService = ctx.serviceManager.getService("settingsService");
+    const updateChannel = await settingsService.getUpdateChannel();
+    const isPrerelease = updateChannel === "beta";
+
+    const response = await fetch(
+      "https://api.github.com/repos/amicalhq/amical/releases",
+      {
+        headers: {
+          "User-Agent": `Amical/${currentVersion}`,
+          Accept: "application/vnd.github+json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: `GitHub API error: ${response.status}`,
+      });
+    }
+
+    const releases = (await response.json()) as Array<{
+      tag_name: string;
+      prerelease: boolean;
+      draft: boolean;
+      html_url: string;
+      body: string | null;
+      published_at: string;
+    }>;
+
+    // Filter out drafts and select based on channel
+    const candidates = releases.filter(
+      (r) => !r.draft && (isPrerelease || !r.prerelease),
+    );
+
+    if (candidates.length === 0) {
+      return {
+        updateAvailable: false,
+        currentVersion,
+        latestVersion: currentVersion,
+        releaseUrl: "https://github.com/amicalhq/amical/releases",
+        releaseNotes: null,
+      };
+    }
+
+    const latest = candidates[0];
+    const latestVersion = latest.tag_name.replace(/^v/, "");
+
+    const updateAvailable = isNewerVersion(latestVersion, currentVersion);
+
+    return {
+      updateAvailable,
+      currentVersion,
+      latestVersion,
+      releaseUrl: latest.html_url,
+      releaseNotes: latest.body ?? null,
+    };
   }),
 
   // Get dictation settings
