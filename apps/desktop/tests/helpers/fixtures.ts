@@ -2,10 +2,8 @@ import type { TestDatabase } from "./test-db";
 import * as schema from "@db/schema";
 import type {
   NewTranscription,
-  NewVocabulary,
   NewModel,
   NewAppSettings,
-  NewNote,
   AppSettingsData,
 } from "@db/schema";
 import { isMacOS } from "../../src/utils/platform";
@@ -118,30 +116,6 @@ export const sampleTranscriptions: NewTranscription[] = [
 ];
 
 /**
- * Sample vocabulary items for testing
- */
-export const sampleVocabulary: NewVocabulary[] = [
-  {
-    word: "Amical",
-    replacementWord: null,
-    isReplacement: false,
-    usageCount: 5,
-  },
-  {
-    word: "API",
-    replacementWord: null,
-    isReplacement: false,
-    usageCount: 3,
-  },
-  {
-    word: "teh",
-    replacementWord: "the",
-    isReplacement: true,
-    usageCount: 2,
-  },
-];
-
-/**
  * Sample models for testing
  */
 export const sampleModels: NewModel[] = [
@@ -214,14 +188,6 @@ export const fixtures = {
   },
 
   /**
-   * Database with vocabulary items
-   */
-  withVocabulary: async (testDb: TestDatabase) => {
-    await fixtures.empty(testDb);
-    await testDb.db.insert(schema.vocabulary).values(sampleVocabulary);
-  },
-
-  /**
    * Database with downloaded models
    */
   withModels: async (testDb: TestDatabase) => {
@@ -243,7 +209,6 @@ export const fixtures = {
   full: async (testDb: TestDatabase) => {
     await fixtures.empty(testDb);
     await testDb.db.insert(schema.transcriptions).values(sampleTranscriptions);
-    await testDb.db.insert(schema.vocabulary).values(sampleVocabulary);
     await testDb.db.insert(schema.models).values(sampleModels);
     await testDb.db.insert(schema.notes).values(sampleNotes);
   },

@@ -289,10 +289,6 @@
         "title": "Shortcuts",
         "description": "Customize keyboard shortcuts and hotkeys"
       },
-      "vocabulary": {
-        "title": "Vocabulary",
-        "description": "Manage custom vocabulary and word recognition"
-      },
       "aiModels": {
         "title": "AI Models",
         "description": "Configure AI models and providers"
@@ -433,7 +429,6 @@
           "items": {
             "transcriptions": "All your transcriptions",
             "notes": "All your notes",
-            "vocabulary": "Your vocabulary",
             "settings": "All settings and preferences",
             "models": "Downloaded models"
           },
@@ -659,40 +654,6 @@
           "description": "Connect your calendar to get started",
           "button": "Connect calendar"
         }
-      }
-    },
-    "vocabulary": {
-      "title": "Vocabulary",
-      "description": "Manage your custom vocabulary and word replacements for dictation.",
-      "addButton": "Add Word",
-      "loading": "Loading vocabulary...",
-      "empty": "No vocabulary words found. Add your first word to get started.",
-      "toast": {
-        "added": "Word added to vocabulary",
-        "addFailed": "Failed to add word: {{message}}",
-        "updated": "Vocabulary updated",
-        "updateFailed": "Failed to update word: {{message}}",
-        "deleted": "Word deleted from vocabulary",
-        "deleteFailed": "Failed to delete word: {{message}}"
-      },
-      "dialog": {
-        "addTitle": "Add to vocabulary",
-        "editTitle": "Edit vocabulary",
-        "replacementLabel": "Make it a replacement",
-        "misspellingPlaceholder": "Misspelling",
-        "correctSpellingPlaceholder": "Correct spelling",
-        "newWordPlaceholder": "Add a new word",
-        "cancel": "Cancel",
-        "saving": "Saving...",
-        "addWord": "Add word",
-        "saveChanges": "Save changes"
-      },
-      "delete": {
-        "title": "Delete vocabulary item",
-        "description": "Are you sure you want to delete \"{{item}}\"? This action cannot be undone.",
-        "cancel": "Cancel",
-        "deleting": "Deleting...",
-        "confirm": "Delete"
       }
     },
     "aiModels": {

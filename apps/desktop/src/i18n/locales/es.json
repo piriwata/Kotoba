@@ -289,10 +289,6 @@
         "title": "Atajos",
         "description": "Personaliza los atajos de teclado y las teclas rápidas"
       },
-      "vocabulary": {
-        "title": "Vocabulario",
-        "description": "Administra el vocabulario personalizado y el reconocimiento de palabras"
-      },
       "aiModels": {
         "title": "Modelos de IA",
         "description": "Configura modelos y proveedores de IA"
@@ -433,7 +429,6 @@
           "items": {
             "transcriptions": "Todas tus transcripciones",
             "notes": "Todas tus notas",
-            "vocabulary": "Tu vocabulario",
             "settings": "Toda la configuración y preferencias",
             "models": "Modelos descargados"
           },
@@ -659,40 +654,6 @@
           "description": "Conecta tu calendario para comenzar",
           "button": "Conectar calendario"
         }
-      }
-    },
-    "vocabulary": {
-      "title": "Vocabulario",
-      "description": "Administra tu vocabulario personalizado y los reemplazos de palabras para el dictado.",
-      "addButton": "Agregar palabra",
-      "loading": "Cargando vocabulario...",
-      "empty": "No se encontraron palabras en el vocabulario. Agrega tu primera palabra para comenzar.",
-      "toast": {
-        "added": "Palabra agregada al vocabulario",
-        "addFailed": "No se pudo agregar la palabra: {{message}}",
-        "updated": "Vocabulario actualizado",
-        "updateFailed": "No se pudo actualizar la palabra: {{message}}",
-        "deleted": "Palabra eliminada del vocabulario",
-        "deleteFailed": "No se pudo eliminar la palabra: {{message}}"
-      },
-      "dialog": {
-        "addTitle": "Agregar al vocabulario",
-        "editTitle": "Editar vocabulario",
-        "replacementLabel": "Convertir en reemplazo",
-        "misspellingPlaceholder": "Error ortográfico",
-        "correctSpellingPlaceholder": "Ortografía correcta",
-        "newWordPlaceholder": "Agregar una nueva palabra",
-        "cancel": "Cancelar",
-        "saving": "Guardando...",
-        "addWord": "Agregar palabra",
-        "saveChanges": "Guardar cambios"
-      },
-      "delete": {
-        "title": "Eliminar elemento del vocabulario",
-        "description": "¿Estás seguro de que quieres eliminar \"{{item}}\"? Esta acción no se puede deshacer.",
-        "cancel": "Cancelar",
-        "deleting": "Eliminando...",
-        "confirm": "Eliminar"
       }
     },
     "aiModels": {

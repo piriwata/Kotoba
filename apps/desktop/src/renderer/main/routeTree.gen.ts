@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteRouteImport } from './routes/settings/route'
 import { Route as IndexRouteImport } from './routes'
 import { Route as SettingsIndexRouteImport } from './routes/settings'
-import { Route as SettingsVocabularyRouteImport } from './routes/settings/vocabulary'
 import { Route as SettingsShortcutsRouteImport } from './routes/settings/shortcuts'
 import { Route as SettingsPreferencesRouteImport } from './routes/settings/preferences'
 import { Route as SettingsDictationRouteImport } from './routes/settings/dictation'
@@ -33,11 +32,6 @@ const IndexRoute = IndexRouteImport.update({
 const SettingsIndexRoute = SettingsIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => SettingsRouteRoute,
-} as any)
-const SettingsVocabularyRoute = SettingsVocabularyRouteImport.update({
-  id: '/vocabulary',
-  path: '/vocabulary',
   getParentRoute: () => SettingsRouteRoute,
 } as any)
 const SettingsShortcutsRoute = SettingsShortcutsRouteImport.update({
@@ -80,7 +74,6 @@ export interface FileRoutesByFullPath {
   '/settings/dictation': typeof SettingsDictationRoute
   '/settings/preferences': typeof SettingsPreferencesRoute
   '/settings/shortcuts': typeof SettingsShortcutsRoute
-  '/settings/vocabulary': typeof SettingsVocabularyRoute
   '/settings/': typeof SettingsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -91,7 +84,6 @@ export interface FileRoutesByTo {
   '/settings/dictation': typeof SettingsDictationRoute
   '/settings/preferences': typeof SettingsPreferencesRoute
   '/settings/shortcuts': typeof SettingsShortcutsRoute
-  '/settings/vocabulary': typeof SettingsVocabularyRoute
   '/settings': typeof SettingsIndexRoute
 }
 export interface FileRoutesById {
@@ -104,7 +96,6 @@ export interface FileRoutesById {
   '/settings/dictation': typeof SettingsDictationRoute
   '/settings/preferences': typeof SettingsPreferencesRoute
   '/settings/shortcuts': typeof SettingsShortcutsRoute
-  '/settings/vocabulary': typeof SettingsVocabularyRoute
   '/settings/': typeof SettingsIndexRoute
 }
 export interface FileRouteTypes {
@@ -118,7 +109,6 @@ export interface FileRouteTypes {
     | '/settings/dictation'
     | '/settings/preferences'
     | '/settings/shortcuts'
-    | '/settings/vocabulary'
     | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -129,7 +119,6 @@ export interface FileRouteTypes {
     | '/settings/dictation'
     | '/settings/preferences'
     | '/settings/shortcuts'
-    | '/settings/vocabulary'
     | '/settings'
   id:
     | '__root__'
@@ -141,7 +130,6 @@ export interface FileRouteTypes {
     | '/settings/dictation'
     | '/settings/preferences'
     | '/settings/shortcuts'
-    | '/settings/vocabulary'
     | '/settings/'
   fileRoutesById: FileRoutesById
 }
@@ -171,13 +159,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/settings/'
       preLoaderRoute: typeof SettingsIndexRouteImport
-      parentRoute: typeof SettingsRouteRoute
-    }
-    '/settings/vocabulary': {
-      id: '/settings/vocabulary'
-      path: '/vocabulary'
-      fullPath: '/settings/vocabulary'
-      preLoaderRoute: typeof SettingsVocabularyRouteImport
       parentRoute: typeof SettingsRouteRoute
     }
     '/settings/shortcuts': {
@@ -232,7 +213,6 @@ interface SettingsRouteRouteChildren {
   SettingsDictationRoute: typeof SettingsDictationRoute
   SettingsPreferencesRoute: typeof SettingsPreferencesRoute
   SettingsShortcutsRoute: typeof SettingsShortcutsRoute
-  SettingsVocabularyRoute: typeof SettingsVocabularyRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
 }
 
@@ -243,7 +223,6 @@ const SettingsRouteRouteChildren: SettingsRouteRouteChildren = {
   SettingsDictationRoute: SettingsDictationRoute,
   SettingsPreferencesRoute: SettingsPreferencesRoute,
   SettingsShortcutsRoute: SettingsShortcutsRoute,
-  SettingsVocabularyRoute: SettingsVocabularyRoute,
   SettingsIndexRoute: SettingsIndexRoute,
 }
 
