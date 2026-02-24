@@ -1,6 +1,6 @@
 import type { AppSettingsData } from "../schema";
 
-// v7 -> v8: Remove cloud mode data (auth, amical-cloud model/formatting selections)
+// v7 -> v8: Remove cloud mode data (auth, amical-cloud model/formatting selections from upstream Amical)
 export function migrateToV8(data: unknown): AppSettingsData {
   type OldData = Omit<AppSettingsData, "onboarding"> & {
     auth?: unknown;

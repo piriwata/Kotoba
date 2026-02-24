@@ -28,13 +28,13 @@ export function SettingsSidebar({
   const navSecondary = [
     {
       title: t("settings.sidebar.docs"),
-      url: "https://amical.ai/docs",
+      url: "https://github.com/piriwata/Kotoba",
       icon: IconBookFilled,
       external: true,
     },
     {
       title: t("settings.sidebar.community"),
-      url: "https://amical.ai/community",
+      url: "https://github.com/piriwata/Kotoba",
       icon: IconBrandDiscordFilled,
       external: true,
     },

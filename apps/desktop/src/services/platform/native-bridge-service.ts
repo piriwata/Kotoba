@@ -41,7 +41,7 @@ import {
   RecheckPressedKeysParams,
   RecheckPressedKeysResult,
   RecheckPressedKeysResultSchema,
-} from "@amical/types";
+} from "@kotoba/types";
 
 // Define the interface for RPC methods
 interface RPCMethods {

@@ -7,10 +7,10 @@ import { toast } from "sonner";
 import { api } from "@/trpc/react";
 import { useTranslation } from "react-i18next";
 
-const CHANGELOG_URL = "https://github.com/amicalhq/amical/releases";
-const GITHUB_URL = "https://github.com/amicalhq/amical";
-const DISCORD_URL = "https://amical.ai/community";
-const CONTACT_EMAIL = "contact@amical.ai";
+const CHANGELOG_URL = "https://github.com/piriwata/Kotoba/releases";
+const GITHUB_URL = "https://github.com/piriwata/Kotoba";
+const DISCORD_URL = "https://github.com/piriwata/Kotoba";
+const CONTACT_EMAIL = "https://github.com/piriwata/Kotoba/issues";
 
 export default function AboutSettingsPage() {
   const { t } = useTranslation();
@@ -134,11 +134,11 @@ export default function AboutSettingsPage() {
                 {t("settings.about.contact.description")}
               </p>
             </div>
-            <ExternalLink href={`mailto:${CONTACT_EMAIL}`}>
+            <ExternalLink href={CONTACT_EMAIL}>
               <div className="flex items-center justify-between group cursor-pointer">
                 <div>
                   <div className="font-semibold text-base group-hover:underline">
-                    {CONTACT_EMAIL}
+                    GitHub Issues
                   </div>
                   <div className="text-muted-foreground text-xs">
                     {t("settings.about.contact.emailCta")}

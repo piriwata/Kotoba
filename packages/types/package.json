@@ -1,7 +1,7 @@
 {
-  "name": "@amical/types",
+  "name": "@kotoba/types",
   "version": "1.0.0",
-  "description": "Shared type definitions and schema generation for Amical",
+  "description": "Shared type definitions and schema generation for Kotoba",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "type:check": "tsc --noEmit"
   },
   "keywords": [
-    "amical",
+    "kotoba",
     "types",
     "schemas",
     "rpc"

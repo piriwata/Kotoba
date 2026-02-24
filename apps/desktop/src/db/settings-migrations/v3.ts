@@ -1,6 +1,6 @@
 import type { AppSettingsData } from "../schema";
 
-// v2 -> v3: Auto-enable formatting with amical-cloud for users already on cloud transcription
+// v2 -> v3: Auto-enable formatting with amical-cloud for users already on cloud transcription (upstream Amical data)
 export function migrateToV3(data: unknown): AppSettingsData {
   const oldData = data as AppSettingsData;
   const isCloudSpeech =

@@ -1,6 +1,6 @@
 {
   "app": {
-    "loading": "Cargando Amical..."
+    "loading": "Cargando Kotoba..."
   },
   "errors": {
     "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
@@ -19,7 +19,7 @@
     "version": "Versión {{version}}"
   },
   "tray": {
-    "tooltip": "Amical",
+    "tooltip": "Kotoba",
     "openConsole": "Abrir consola",
     "about": "Acerca de",
     "quit": "Salir"
@@ -54,7 +54,7 @@
       "supportNote": "Si el problema persiste, por favor contacta a soporte o consulta la documentación para obtener ayuda."
     },
     "welcome": {
-      "title": "Bienvenido a Amical",
+      "title": "Bienvenido a Kotoba",
       "subtitle": "Selecciona las funciones que te interesan para personalizar tu experiencia",
       "skip": "Omitir configuración inicial",
       "comingSoon": "Próximamente",
@@ -89,7 +89,7 @@
     },
     "permissions": {
       "title": "Configurar permisos",
-      "subtitle": "Amical necesita algunos permisos para funcionar correctamente",
+      "subtitle": "Kotoba necesita algunos permisos para funcionar correctamente",
       "waiting": "Esperando permisos...",
       "polling": "Verificando cambios de permisos...",
       "allGranted": {
@@ -115,11 +115,11 @@
       "accessibility": {
         "title": "Acceso de accesibilidad",
         "description": "Requerido para pegar transcripciones y atajos de teclado globales (solo macOS)",
-        "deniedHelp": "Agrega Amical a Accesibilidad en Configuración del Sistema"
+        "deniedHelp": "Agrega Kotoba a Accesibilidad en Configuración del Sistema"
       }
     },
     "discovery": {
-      "title": "¿Cómo descubriste Amical?",
+      "title": "¿Cómo descubriste Kotoba?",
       "subtitle": "Esto nos ayuda a entender de dónde vienen nuestros usuarios",
       "sources": {
         "searchEngine": "Motor de búsqueda (Google, Bing, etc.)",
@@ -131,7 +131,7 @@
         "other": "Otro"
       },
       "toast": {
-        "selectSource": "Por favor selecciona cómo descubriste Amical",
+        "selectSource": "Por favor selecciona cómo descubriste Kotoba",
         "otherDetailsRequired": "Por favor proporciona detalles para \"Otro\""
       },
       "other": {
@@ -176,7 +176,7 @@
     },
     "completion": {
       "title": "¡Configuración completada!",
-      "start": "Comenzar a usar Amical",
+      "start": "Comenzar a usar Kotoba",
       "quickConfig": {
         "title": "Configuración rápida"
       },
@@ -286,15 +286,15 @@
       },
       "about": {
         "title": "Acerca de",
-        "description": "Acerca de Amical e información de versión"
+        "description": "Acerca de Kotoba e información de versión"
       }
     },
     "sidebar": {
       "docs": "Documentación",
       "community": "Comunidad",
       "discordAlt": "Discord",
-      "logoAlt": "Logo de Amical",
-      "brand": "Amical"
+      "logoAlt": "Logo de Kotoba",
+      "brand": "Kotoba"
     },
     "search": {
       "buttonLabel": "Buscar",
@@ -342,7 +342,7 @@
         },
         "restartDialog": {
           "title": "Se requiere reiniciar",
-          "description": "Reinicia Amical para aplicar los cambios de idioma. También puedes aplicarlos en el próximo inicio.",
+          "description": "Reinicia Kotoba para aplicar los cambios de idioma. También puedes aplicarlos en el próximo inicio.",
           "restartNow": "Reiniciar ahora",
           "later": "Aplicar en el próximo inicio"
         },
@@ -383,7 +383,7 @@
       },
       "telemetry": {
         "label": "Telemetría anónima",
-        "description": "Ayuda a mejorar Amical compartiendo datos de uso anónimos.",
+        "description": "Ayuda a mejorar Kotoba compartiendo datos de uso anónimos.",
         "learnMore": "Más información"
       },
       "dataLocation": {
@@ -538,7 +538,7 @@
         "label": "Formato",
         "badge": "Alfa",
         "description": "Aplica puntuación y estructura a tus transcripciones.",
-        "disabledTooltip": "Sincroniza un modelo de lenguaje o selecciona la transcripción de Amical Cloud para habilitar el formato.",
+        "disabledTooltip": "Sincroniza un modelo de lenguaje o selecciona la transcripción de Kotoba Cloud para habilitar el formato.",
         "disabledReason": {},
         "manageLanguageModels": "Administrar modelos de lenguaje",
         "modelLabel": "Modelo de formato",
