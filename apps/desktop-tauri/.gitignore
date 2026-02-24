@@ -1,0 +1,10 @@
+# target/ is Rust build output
+src-tauri/target/
+
+# Frontend build output
+dist/
+node_modules/
+.vite/
+
+# Tauri build artifacts
+src-tauri/gen/
