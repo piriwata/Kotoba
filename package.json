@@ -1,5 +1,5 @@
 {
-  "name": "amical",
+  "name": "kotoba",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -41,13 +41,13 @@
       "keytar",
       "protobufjs",
       "sharp",
-      "@amical/whisper-wrapper",
+      "@kotoba/whisper-wrapper",
       "drizzle-orm/libsql"
     ],
     "onlyBuiltDependencies": [
       "electron",
       "electron-winstaller",
-      "@amical/whisper-wrapper",
+      "@kotoba/whisper-wrapper",
       "drizzle-orm/libsql",
       "@libsql",
       "macos-alias",

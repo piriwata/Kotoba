@@ -190,7 +190,7 @@ export function SiteHeader({
             className={`flex items-center pointer-events-none select-none transition-opacity duration-200 ${showTitle ? "opacity-100" : "opacity-0"}`}
           >
             <Separator orientation="vertical" className="h-4" />
-            <h1 className="text-sm font-medium">{currentView || "Amical"}</h1>
+            <h1 className="text-sm font-medium">{currentView || "Kotoba"}</h1>
           </div>
         </div>
       </header>

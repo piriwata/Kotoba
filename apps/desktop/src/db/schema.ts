@@ -152,7 +152,7 @@ export interface AppSettingsData {
     lastVisitedScreen?: string; // Last screen user was on (for resume)
     skippedScreens?: string[]; // Screens skipped via feature flags
     featureInterests?: string[]; // Selected features (max 3)
-    discoverySource?: string; // How user found Amical
+    discoverySource?: string; // How user found Kotoba
     selectedModelType: "local"; // User's model choice
     modelRecommendation?: {
       suggested: "local"; // System recommendation

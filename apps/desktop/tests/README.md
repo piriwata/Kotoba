@@ -1,6 +1,6 @@
 # Testing Guide
 
-This directory contains the test setup for the Amical Desktop application's main process.
+This directory contains the test setup for the Kotoba Desktop application's main process.
 
 ## Overview
 
