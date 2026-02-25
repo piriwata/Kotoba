@@ -108,19 +108,11 @@ jobs:
         run: pnpm package
 
   build_tauri:
-    name: Build Desktop (Tauri, ${{ matrix.os }})
+    name: Build Desktop (Tauri, windows)
     needs: typecheck
-    runs-on: ${{ matrix.runner }}
+    runs-on: windows-2025
     permissions:
       contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: macos
-            runner: macos-latest
-          - os: windows
-            runner: windows-2025
 
     steps:
       - name: Checkout
@@ -142,8 +134,7 @@ jobs:
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: >-
-            ${{ matrix.os == 'windows' && 'x86_64-pc-windows-msvc' || '' }}
+          targets: x86_64-pc-windows-msvc
 
       - name: Cache Rust build artifacts
         uses: Swatinem/rust-cache@v2
