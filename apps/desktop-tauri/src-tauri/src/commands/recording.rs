@@ -35,7 +35,7 @@ pub struct FinalizeSessionOptions {
 /// Transitions: Idle -> Recording.
 #[tauri::command]
 pub fn signal_start(
-    state: AppStateGuard,
+    state: AppStateGuard<'_>,
     app: tauri::AppHandle,
 ) -> Result<RecordingStateUpdate, String> {
     let mut state = state.lock().map_err(|e| e.to_string())?;
@@ -63,7 +63,7 @@ pub fn signal_start(
 /// Transitions: Recording -> Processing.
 #[tauri::command]
 pub fn signal_stop(
-    state: AppStateGuard,
+    state: AppStateGuard<'_>,
     app: tauri::AppHandle,
 ) -> Result<RecordingStateUpdate, String> {
     let mut state = state.lock().map_err(|e| e.to_string())?;
@@ -85,7 +85,7 @@ pub fn signal_stop(
 
 /// Get current recording state.
 #[tauri::command]
-pub fn get_recording_state(state: AppStateGuard) -> Result<RecordingStateUpdate, String> {
+pub fn get_recording_state(state: AppStateGuard<'_>) -> Result<RecordingStateUpdate, String> {
     let state = state.lock().map_err(|e| e.to_string())?;
     Ok(RecordingStateUpdate {
         state: state.recording_state.clone(),
@@ -98,7 +98,7 @@ pub fn get_recording_state(state: AppStateGuard) -> Result<RecordingStateUpdate,
 /// Returns current accumulated transcription (empty during streaming).
 #[tauri::command]
 pub fn process_audio_chunk(
-    _state: AppStateGuard,
+    _state: AppStateGuard<'_>,
     _options: ProcessChunkOptions,
 ) -> Result<String, String> {
     // In Tauri, the renderer-side MediaRecorder sends audio chunks here.
@@ -111,7 +111,7 @@ pub fn process_audio_chunk(
 /// save to DB, transition state back to Idle.
 #[tauri::command]
 pub async fn finalize_session(
-    state: AppStateGuard,
+    state: AppStateGuard<'_>,
     app: tauri::AppHandle,
     options: FinalizeSessionOptions,
 ) -> Result<String, String> {
@@ -215,7 +215,7 @@ pub async fn finalize_session(
 /// Cancel the active recording session without processing.
 #[tauri::command]
 pub fn cancel_session(
-    state: AppStateGuard,
+    state: AppStateGuard<'_>,
     app: tauri::AppHandle,
 ) -> Result<(), String> {
     let mut state = state.lock().map_err(|e| e.to_string())?;

@@ -1,4 +1,5 @@
 use std::sync::Mutex;
+use crate::state::AppState;
 use tauri::{
     menu::{MenuBuilder, MenuItemBuilder},
     tray::{TrayIconBuilder, TrayIconEvent},
