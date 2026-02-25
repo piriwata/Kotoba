@@ -12,8 +12,8 @@ on:
         type: string
 
 jobs:
-  build:
-    name: Build Windows (${{ matrix.arch }})
+  build_electron:
+    name: Build Windows Electron (${{ matrix.arch }})
     runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
@@ -103,15 +103,82 @@ jobs:
       - name: Upload artifacts (Windows)
         uses: actions/upload-artifact@v4
         with:
-          name: windows-${{ matrix.arch }}
+          name: electron-windows-${{ matrix.arch }}
           path: |
             apps/desktop/out/make/squirrel.windows/${{ matrix.arch }}/Kotoba-windows-${{ matrix.arch }}.exe
             apps/desktop/out/make/squirrel.windows/${{ matrix.arch }}/*.nupkg
             apps/desktop/out/make/squirrel.windows/${{ matrix.arch }}/RELEASES
 
+  build_tauri:
+    name: Build Windows Tauri (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        include:
+          - os: windows
+            arch: x64
+            runner: windows-2025
+            rust_target: x86_64-pc-windows-msvc
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.1.0"
+          cache: "pnpm"
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_target }}
+
+      - name: Cache Rust build artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop-tauri/src-tauri -> target
+
+      - name: Install dependencies
+        env:
+          GGML_NATIVE: OFF
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Tauri frontend
+        working-directory: apps/desktop-tauri
+        run: pnpm build:frontend
+
+      - name: Build Tauri app (Windows)
+        working-directory: apps/desktop-tauri
+        run: pnpm tauri build --target ${{ matrix.rust_target }}
+
+      - name: Get version from package.json
+        id: package_version
+        working-directory: apps/desktop-tauri
+        shell: bash
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Upload Tauri artifacts (Windows)
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-windows-${{ matrix.arch }}
+          path: |
+            apps/desktop-tauri/src-tauri/target/${{ matrix.rust_target }}/release/bundle/nsis/*.exe
+            apps/desktop-tauri/src-tauri/target/${{ matrix.rust_target }}/release/bundle/msi/*.msi
+
   release:
     name: Create Release
-    needs: build
+    needs: [build_electron, build_tauri]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -133,10 +200,10 @@ jobs:
       - name: List artifacts
         run: |
           echo "=== Full artifacts directory structure ==="
-          find artifacts -type f \( -name "*.dmg" -o -name "*.zip" -o -name "*.exe" -o -name "*.nupkg" -o -name "RELEASES" \) | sort
+          find artifacts -type f \( -name "*.dmg" -o -name "*.zip" -o -name "*.exe" -o -name "*.msi" -o -name "*.nupkg" -o -name "RELEASES" \) | sort
           echo ""
           echo "=== Detailed file listing ==="
-          find artifacts -type f \( -name "*.dmg" -o -name "*.zip" -o -name "*.exe" -o -name "*.nupkg" -o -name "RELEASES" \) -exec ls -la {} \;
+          find artifacts -type f \( -name "*.dmg" -o -name "*.zip" -o -name "*.exe" -o -name "*.msi" -o -name "*.nupkg" -o -name "RELEASES" \) -exec ls -la {} \;
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -150,18 +217,27 @@ jobs:
 
             ### Downloads
 
-            #### Windows
-            - **Windows (x64)**: Download the .exe installer for 64-bit Windows
+            #### Windows — Electron edition
+            - **Windows (x64)**: Download the `.exe` installer for 64-bit Windows (Squirrel)
+
+            #### Windows — Tauri edition
+            - **Windows (x64) NSIS**: Lightweight installer built with Tauri
+            - **Windows (x64) MSI**: MSI package built with Tauri
 
             ### Installation
 
-            **Windows**:
-            - Download and run the .exe installer
+            **Windows (Electron)**:
+            - Download and run the `.exe` installer
             - Follow the installation wizard
             - The app will be installed to your user AppData folder and a shortcut will be created
+
+            **Windows (Tauri)**:
+            - Download and run the NSIS `.exe` or `.msi` installer
           files: |
-            artifacts/windows-x64/*.exe
-            artifacts/windows-x64/*.nupkg
-            artifacts/windows-x64/RELEASES
+            artifacts/electron-windows-x64/*.exe
+            artifacts/electron-windows-x64/*.nupkg
+            artifacts/electron-windows-x64/RELEASES
+            artifacts/tauri-windows-x64/*.exe
+            artifacts/tauri-windows-x64/*.msi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

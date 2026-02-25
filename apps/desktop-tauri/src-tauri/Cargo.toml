@@ -1,0 +1,32 @@
+[package]
+name = "kotoba-desktop"
+version = "1.0.0"
+description = "Kotoba — AI-powered Japanese dictation desktop app"
+authors = ["piriwata"]
+edition = "2021"
+
+[lib]
+name = "kotoba_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png", "image-ico"] }
+tauri-plugin-sql = { version = "2", features = ["sqlite"] }
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-process = "2"
+tauri-plugin-autostart = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+uuid = { version = "1", features = ["v4"] }
+log = "0.4"
+dirs = "5"
+reqwest = { version = "0.12", features = ["json"] }
+futures = "0.3"
