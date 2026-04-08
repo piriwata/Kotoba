@@ -155,7 +155,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
     "drizzle-kit": "^0.31.1",
-    "drizzle-orm": "^0.43.1",
+    "drizzle-orm": "^0.45.2",
     "electron-log": "^5.4.0",
     "electron-squirrel-startup": "^1.0.1",
     "electron-trpc-experimental": "1.0.0-alpha.1",
